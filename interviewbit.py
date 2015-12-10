@@ -117,3 +117,55 @@ class Solution():
                     total += simple_distance((x1 - fast_move, y1 - fast_move), B)
 
         return total
+
+    '''
+    [Interviewbit: Level 2 Arrays] MAXSUM, 12/10/2015
+
+    Find the contiguous subarray within an array (containing at least one number) which has the largest sum.
+    Ex) Given the array [-2,1,-3,4,-1,2,1,-5,4],
+        the contiguous subarray [4,-1,2,1] has the largest sum = 6.
+    '''
+    # @param A : tuple of integers
+    # @return an integer
+    def maxSubArray(self, A):
+
+        # Kadane's Algorithm: O(N)
+        ans, s = 0, 0
+        for i in range(1, len(A)):
+            if s + A[i] > 0:
+                s += A[i]
+            else:
+                s = 0
+            ans = max(ans, s)
+
+        '''
+        # Naive approach - Brute Force: O(N^2)
+        max = -99999999
+        for i in range(len(A)):
+            for j in range(i + 1, len(A) + 1):
+                tmp = sum(A[i:j])
+                if tmp > max:
+                    max = tmp
+                    #ans = A[i:j]
+        return max
+
+        # Divide and Conquer: O(N log N) - need to be fixed
+        if len(A) == 1:
+            return A[0]
+
+        m = len(A)/2
+        left_mss = self.maxSubArray(A[0:m])
+        right_mss = self.maxSubArray(A[m:])
+
+        left_sum = -99999999
+        right_sum = -99999999
+
+        right_sum = max(right_sum, sum(A[m:]))
+        left_sum = max(left_sum, sum(A[0:m]))
+
+        ans = max(left_mss, right_mss)
+        return max(ans, left_sum + right_sum)
+        '''
+
+        return ans if ans > 0 else 0
+
