@@ -230,3 +230,47 @@ class Solution():
             return False
 
         return True
+
+    '''
+    [Leetcode: Easy] (217) Contains Duplicates I, 12/11/2015
+
+    Given an array of integers, find if the array contains any duplicates.
+    Your function should return true if any value appears at least twice in the array,
+    and it should return false if every element is distinct.
+    '''
+    def containsDuplicate(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: bool
+        """
+        return False if len(nums) == 0 else len(set(nums)) != len(nums)
+
+    '''
+    [Leetcode: Easy] (219) Contains Duplicates II, 12/11/2015
+
+    Given an array of integers and an integer k,
+    find out whether there are two distinct indices i and j in the array
+    such that nums[i] = nums[j] and the difference between i and j is at most k.
+    '''
+    def containsNearbyDuplicate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: bool
+        """
+        counter = {}
+        ans = False
+
+        for i in range(len(nums)):
+            if nums[i] not in counter.keys():
+                counter[nums[i]] = [i]
+            else:
+                counter[nums[i]] += [i]
+
+        for positions in counter.values():
+            if len(positions) > 1:
+                for gap in [positions[x+1] - positions[x] for x in range(len(positions) - 1)]:
+                    if gap <= k:
+                        ans = True
+
+        return ans
