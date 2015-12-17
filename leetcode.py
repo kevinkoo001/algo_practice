@@ -274,3 +274,21 @@ class Solution():
                         ans = True
 
         return ans
+
+    '''
+    [Leetcode: Easy] (237) Delete Node in a Linked List, 12/17/2015
+
+    Write a function to delete a node (except the tail) in a singly linked list, given only access to that node.
+    Supposed the linked list is 1 -> 2 -> 3 -> 4 and you are given the third node with value 3,
+    the linked list should become 1 -> 2 -> 4 after calling your function.
+    '''
+    def deleteNode(self, node):
+        """
+        :type node: ListNode
+        :rtype: void Do not return anything, modify node in-place instead.
+        """
+        # Elegant O(1) solution,
+        # 1. Copy the next value to the current node to delete
+        # 2. Link the next node of the current node to the next node of the copied node
+        node.val = node.next.val
+        node.next = node.next.next
