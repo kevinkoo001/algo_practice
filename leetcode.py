@@ -292,3 +292,30 @@ class Solution():
         # 2. Link the next node of the current node to the next node of the copied node
         node.val = node.next.val
         node.next = node.next.next
+
+    '''
+    [Leetcode: Easy] (110) Balanced Binary Tree, 12/19/2015
+
+    Given a binary tree, determine if it is height-balanced.
+    For this problem, a height-balanced binary tree is defined as a binary tree
+    in which the depth of the two subtrees of every node never differ by more than 1.
+    '''
+    def isBalanced(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        def isBalancedHelper(root):
+            if root is None:
+                return 0
+
+            left = isBalancedHelper(root.left)
+            right = isBalancedHelper(root.right)
+
+            # Check if each subtree is balanced on both left and right
+            if left == -1 or right == -1 or abs(left - right) > 1:
+                return -1
+
+            return 1 + max(left, right)
+
+        return False if isBalancedHelper(root) == -1 else True
