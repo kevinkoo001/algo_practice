@@ -292,3 +292,140 @@ class Solution():
         # 2. Link the next node of the current node to the next node of the copied node
         node.val = node.next.val
         node.next = node.next.next
+
+    '''
+    [Leetcode: Easy] (226) Invert Binary Tree, 12/17/2015
+         4
+       /   \
+      2     7
+     / \   / \
+    1   3 6   9
+        to
+         4
+       /   \
+      7     2
+     / \   / \
+    9   6 3   1
+    '''
+    def invertTree(self, root):
+        """
+        :type root: TreeNode
+        :rtype: TreeNode
+        """
+        if root is None:
+            return None
+
+        if root.left:
+            self.invertTree(root.left)
+        if root.right:
+            self.invertTree(root.right)
+
+        root.left, root.right = root.right, root.left
+        return root
+
+    '''
+    [Leetcode: Easy] (234) Palindrome Linked List, 1/30/2016
+
+    Given a singly linked list, determine if it is a palindrome.
+    Could you do it in O(n) time and O(1) space? Yes!
+    '''
+    def isPalindrome(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+
+        def getSize(head):
+            if head is None:
+                return 0
+            else:
+                size = 1
+                ptr = head
+                while ptr.next:
+                    size += 1
+                    ptr = ptr.next
+                return size
+
+        panLen = getSize(head)
+        if panLen < 2:
+            return True
+        elif panLen == 2:
+            return head.val == head.next.val
+        elif panLen == 3:
+            return head.val == head.next.next.val
+
+        # Initialization
+        # head --|
+        #        O <- O   O -> ...
+        # left_head --|   |-- right_head
+        left_head = head.next
+        right_head = left_head.next
+        left_head.next = head
+
+        # Reverse the link up to the half of the linked list
+        # head --|
+        #        O <- O <- O   O -> ...
+        # left_head -------|   |-- right_head
+        for i in range(1, panLen//2 - 1):
+            p_tmp = left_head
+            left_head = right_head
+            right_head = right_head.next
+            left_head.next = p_tmp
+
+        if panLen % 2 == 1:
+            right_head = right_head.next
+
+        while left_head is not None and right_head is not None:
+            if left_head.val != right_head.val:
+                return False
+            left_head = left_head.next
+            right_head = right_head.next
+
+        return True
+
+    '''
+    [Leetcode: Medium] (49) Group Anagrams, 1/30/2016
+
+    Given an array of strings, group anagrams together.
+    For the return value, each inner list's elements must follow the lexicographic order.
+    All inputs will be in lower-case
+
+    For example, given: ["eat", "tea", "tan", "ate", "nat", "bat"],
+    Return:
+
+    [
+      ["ate", "eat","tea"],
+      ["nat","tan"],
+      ["bat"]
+    ]
+    '''
+    def groupAnagrams(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: List[List[str]]
+        """
+
+        # The below should be working, but somehow time-exceeded constraint frustrates me
+        ans = dict()
+
+        for s in strs:
+            group = hash(''.join(sorted(s)))
+            if group in ans.keys():
+                ans[group] += [s]
+            else:
+                ans[group] = [s]
+
+        result = []
+        for v in ans.values():
+            if len(v) > 1:
+                result.append(sorted(v))
+            else:
+                result.append(v)
+
+        '''
+        # Simple but ugly using a library
+        from itertools import groupby
+        return [sorted(list(group)) for key, group in groupby(sorted(strs, key=sorted),sorted)]
+        '''
+
+        return result
