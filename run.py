@@ -122,10 +122,22 @@ class CodeTest(object):
         print '\nAfter:'
         basicds.levelorder(root)
 
+    def leet_304(self):
+        matrix = [[3, 0, 1, 4, 2],
+              [5, 6, 3, 2, 1],
+              [1, 2, 0, 1, 5],
+              [4, 1, 0, 1, 7],
+              [1, 0, 3, 0, 5]]
+
+        nm = self.leet.NumMatrix(matrix)
+        print nm.sumRegion(2, 1, 4, 3)
+        print nm.sumRegion(1, 1, 2, 2)
+        print nm.sumRegion(1, 2, 2, 4)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '226')
+    test_main('leet', '304')

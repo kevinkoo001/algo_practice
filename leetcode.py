@@ -430,7 +430,8 @@ class Solution():
         '''
 
         return result
-=======
+
+    '''
     [Leetcode: Easy] (110) Balanced Binary Tree, 12/19/2015
 
     Given a binary tree, determine if it is height-balanced.
@@ -456,4 +457,60 @@ class Solution():
             return 1 + max(left, right)
 
         return False if isBalancedHelper(root) == -1 else True
->>>>>>> 840f9ffdd75b47f077fc21cb41ee3f3beaaf50ec
+
+    '''
+    [Leetcode: Medium] (304) Range Sum Query (Immutable), 1/30/2016
+
+    Given a 2D matrix matrix, find the sum of the elements inside the rectangle
+    defined by its upper left corner (row1, col1) and lower right corner (row2, col2)
+    Given matrix = [
+      [3, 0, 1, 4, 2],
+      [5, 6, 3, 2, 1],
+      [1, 2, 0, 1, 5],
+      [4, 1, 0, 1, 7],
+      [1, 0, 3, 0, 5]
+    ]
+    sumRegion(2, 1, 4, 3) -> 8
+    sumRegion(1, 1, 2, 2) -> 11
+    sumRegion(1, 2, 2, 4) -> 12
+    You may assume that the matrix does not change.
+    There are many calls to sumRegion function.
+    You may assume that row1 <= row2 and col1 <= col2.
+    '''
+    class NumMatrix(object):
+        def __init__(self, matrix):
+            """
+            initialize your data structure here.
+            :type matrix: List[List[int]]
+            """
+
+            self.matrix = matrix
+
+            # dp matrix initialization
+            self.dp = [[0 for col in range(len(matrix[0]))] for row in range(len(matrix))]
+
+            for i in range(len(matrix)):
+                for j in range(len(matrix[0])):
+                    upper_left = self.dp[i-1][j-1] if i-1 >= 0 and j-1 >= 0 else 0
+                    left = self.dp[i-1][j] if i-1 >= 0 else 0
+                    up = self.dp[i][j-1] if j-1 >= 0 else 0
+                    self.dp[i][j] = up + left - upper_left + matrix[i][j]
+
+        def sumRegion(self, row1, col1, row2, col2):
+            """
+            sum of elements matrix[(row1,col1)..(row2,col2)], inclusive.
+            :type row1: int
+            :type col1: int
+            :type row2: int
+            :type col2: int
+            :rtype: int
+            """
+
+            # Using dp matrix, the sum of the region can be calculated as
+            # dp[row2][col2] - dp[row2][col1-1] - dp[row1-1][col2] + dp[row1-1][col1-1]
+            sum_upper_left = self.dp[row1-1][col1-1] if row1-1 >= 0 and col1-1 >=0 else 0
+            sum_left = self.dp[row2][col1-1] if col1-1 >= 0 else 0
+            sum_up = self.dp[row1-1][col2] if row1-1 >=0 else 0
+
+            #print sum_upper_left, sum_left, sum_up, dp[row2][col2]
+            return self.dp[row2][col2] - (sum_left + sum_up) + sum_upper_left
