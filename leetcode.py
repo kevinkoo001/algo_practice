@@ -514,3 +514,112 @@ class Solution():
 
             #print sum_upper_left, sum_left, sum_up, dp[row2][col2]
             return self.dp[row2][col2] - (sum_left + sum_up) + sum_upper_left
+
+    '''
+    [Leetcode: Easy] (292) Nin game, 1/31/2016
+
+    You are playing the following Nim Game with your friend:
+    There is a heap of stones on the table, each time one of you take turns to remove 1 to 3 stones.
+    The one who removes the last stone will be the winner. You will take the first turn to remove the stones.
+    Both of you are very clever and have optimal strategies for the game.
+    Write a function to determine whether you can win the game given the number of stones in the heap.
+    For example, if there are 4 stones in the heap, then you will never win the game:
+    no matter 1, 2, or 3 stones you remove, the last stone will always be removed by your friend.
+    '''
+    def canWinNim(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        # Assuming optimal strategies would be taken at all times for both players,
+        # the first player would always lose when n is the multiple of 4
+        # because the other player will pick some so that the remaining stone is the multiple of 4.
+        return n%4 != 0
+
+    '''
+    [Leetcode: Easy] (328) Odd Even Linked List, 1/31/2016
+
+    Given a singly linked list, group all odd nodes together followed by the even nodes.
+    You should try to do it in place. The program should run in O(1) space complexity and O(nodes) time complexity.
+    Example:
+        Given 1->2->3->4->5->NULL,
+        return 1->3->5->2->4->NULL.
+    Note:
+        We are talking about the node number and not the value in the nodes.
+        The relative order inside both the even and odd groups should remain as it was in the input.
+        The first node is considered odd, the second node even and so on ...
+    '''
+    def oddEvenList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+
+        # No change if the number of nodes in the list is less than 3
+        if head is None or head.next is None or head.next.next is None:
+            return head
+
+        # (Init) Define odd/even head ptrs and next ptrs
+        # ( 1 )  -->  ( 2 )  -->  ( 3 )  -->  ( 4 )
+        #  ||           ||
+        #  ||-->head    ||-->even_head
+        #  |-->odd_next |-->even_next
+
+        even_head = head.next
+        odd_next = head
+        even_next = even_head
+
+        # Step [A] odd_next.next = even_next.next
+        # ( 1 )  -------------->  ( 3 ) --->  ( 4 )
+        #              ( 2 )  ------|
+        #  ||           ||
+        #  ||-->head    ||-->even_head
+        #  |-->odd_next |-->even_next
+
+        # Step [B] odd_next = even_next.next
+        # ( 1 )  -------------->  ( 3 ) --->  ( 4 )
+        #              ( 2 )  ------||
+        #   |           ||           |-->odd_next
+        #   |-->head    ||-->even_head
+        #               |-->even_next
+
+        # Step [C] even_next.next = odd_next.next
+        # ( 1 )  -------------->  ( 3 ) --------|
+        #              ( 2 )  -------|----->   ( 4 )
+        #   |           ||           |-->odd_next
+        #   |-->head    ||-->even_head
+        #               |-->even_next
+
+        # Step [D] even_next = odd_next.next
+        # ( 1 )  -------------->  ( 3 ) --------|
+        #              ( 2 )  -------|----->   ( 4 )
+        #   |            |           |-->odd_next|
+        #   |-->head     |-->even_head           |
+        #                                        |-->even_next
+
+        # Step [E] Complete and return head
+        # ( 1 )  -->  ( 3 )  -->  ( 2 )  -->  ( 4 )
+        #   |            |           |-->even_head
+        #   |-->head     |-->odd_next            |
+        #                                        |-->even_next
+
+        while odd_next is not None or even_next is not None:
+            # When the number of linked list is even
+            if even_next.next is None:
+                odd_next.next = even_head           # Step [E]
+                even_next.next = None
+                break
+            else:
+                odd_next.next = even_next.next      # Step [A]
+                odd_next = even_next.next           # Step [B]
+
+            # When the number of linked list is odd
+            if odd_next.next is None:
+                odd_next.next = even_head
+                even_next.next = None
+                break
+            else:
+                even_next.next = odd_next.next      # Step [C]
+                even_next = odd_next.next           # Step [D]
+
+        return head

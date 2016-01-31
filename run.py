@@ -134,10 +134,30 @@ class CodeTest(object):
         print nm.sumRegion(1, 1, 2, 2)
         print nm.sumRegion(1, 2, 2, 4)
 
+    def leet_292(self):
+        print self.leet.canWinNim(12)
+
+    def leet_328(self):
+        head = basicds.ListNode(1)
+        n2 = basicds.ListNode(2)
+        n3 = basicds.ListNode(3)
+        n4 = basicds.ListNode(4)
+        n5 = basicds.ListNode(5)
+        n6 = basicds.ListNode(6)
+        head.next = n2
+        n2.next = n3
+        n3.next = n4
+        n4.next = n5
+        n5.next = n6
+
+        basicds.printList(head)
+        self.leet.oddEvenList(head)
+        basicds.printList(head)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '304')
+    test_main('leet', '328')

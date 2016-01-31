@@ -18,3 +18,11 @@ def levelorder(node, more=None):
         print node.val,
     if more:
         levelorder(more[0], more[1:])
+
+def printList(root):
+    if root is None:
+        print 'No entry in the linked list!'
+    while root:
+        print root.val,
+        root = root.next
+    print ''
