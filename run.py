@@ -154,10 +154,26 @@ class CodeTest(object):
         self.leet.oddEvenList(head)
         basicds.printList(head)
 
+    def leet_206(self):
+        x1 = basicds.ListNode(1)
+        x2 = basicds.ListNode(2)
+        x3 = basicds.ListNode(3)
+        x4 = basicds.ListNode(4)
+        x5 = basicds.ListNode(5)
+        x1.next = x2
+        x2.next = x3
+        x3.next = x4
+        x4.next = x5
+        x5.next = None
+
+        basicds.printList(x1)
+        new_head = self.leet.reverseList(x1)
+        basicds.printList(new_head)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '328')
+    test_main('leet', '206')

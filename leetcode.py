@@ -623,3 +623,35 @@ class Solution():
                 even_next = odd_next.next           # Step [D]
 
         return head
+
+    '''
+    [Leetcode: Easy] (206) Reverse Linked List, 2/3/2016
+
+    Reverse a singly linked list.
+    Example:
+        Given 1->2->3->4->5->NULL,
+        return 5->4->3->2->1->NULL.
+    '''
+    def reverseList(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+
+        if head is None or head.next is None:
+            return head
+
+        # Initialization
+        prev = head
+        cur = head.next
+        head.next = None
+
+        while cur.next:
+            post = cur.next
+            cur.next = prev
+            prev = cur
+            cur = post
+
+        cur.next = prev
+
+        return cur
