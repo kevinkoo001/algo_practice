@@ -762,3 +762,36 @@ class Solution():
         ans = int(ans) if x>0 else (-1 * int(ans))
 
         return ans if INT_MIN <= ans <= INT_MAX else 0
+
+    '''
+    [Leetcode: Easy] (100) Same Tree, 2/4/2016
+    Given two binary trees, write a function to check if they are equal or not.
+    Two binary trees are considered equal if they are structurally identical
+    and the nodes have the same value.
+    '''
+    def isSameTree(self, p, q):
+        """
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: bool
+        """
+
+        # Recursively visit all nodes of both p and q in order
+        def isSameTreeHelper(p, q):
+            # Base case 1: two nodes are None, return True
+            if p is None and q is None:
+                return True
+
+            # Base case 2: one node is None and the other is not, return False
+            elif (p is None and q is not None) or (p is not None and q is None):
+                print "Topology is Different!"
+                return False
+
+            # Otherwise (two nodes are not None), check if the values are the same
+            # Check out all subtrees of two trees: p and q.
+            else:
+                if p.val != q.val:
+                    print "Different value here: %d in p and %d in q" % (p.val, q.val)
+                return p.val == q.val and isSameTreeHelper(p.left, q.left) and isSameTreeHelper(p.right, q.right)
+
+        return isSameTreeHelper(p, q)

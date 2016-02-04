@@ -190,10 +190,52 @@ class CodeTest(object):
         print self.leet.reverse(9654534)
         print self.leet.reverse(-1234567)
 
+    def leet_100(self):
+        p1 = basicds.TreeNode(4,
+            basicds.TreeNode(7,
+                 basicds.TreeNode(2,
+                      basicds.TreeNode(9, None, None),
+                      None),
+                 basicds.TreeNode(6, None, None)),
+            basicds.TreeNode(3,
+                 basicds.TreeNode(1,
+                      basicds.TreeNode(8, None, None),
+                      basicds.TreeNode(5, None, None)),
+                 None))
+
+        q1 = basicds.TreeNode(4,
+            basicds.TreeNode(7,
+                 basicds.TreeNode(2,
+                      basicds.TreeNode(9, None, None),
+                      None),
+                 basicds.TreeNode(6, None, None)),
+            basicds.TreeNode(3,
+                 basicds.TreeNode(1,
+                      basicds.TreeNode(4, None, None),
+                      basicds.TreeNode(5, None, None)),
+                 None))
+
+        print self.leet.isSameTree(p1, q1)
+
+        p2 = basicds.TreeNode(4,
+            basicds.TreeNode(7,
+                 basicds.TreeNode(2,
+                      basicds.TreeNode(9, None, None),
+                      None),
+                 basicds.TreeNode(6, None, None)))
+
+        q2 = basicds.TreeNode(4,
+            basicds.TreeNode(7,
+                 basicds.TreeNode(2,
+                      basicds.TreeNode(9, None, None),
+                      None)))
+
+        print self.leet.isSameTree(p2, q2)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '007')
+    test_main('leet', '100')
