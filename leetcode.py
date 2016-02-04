@@ -655,3 +655,110 @@ class Solution():
         cur.next = prev
 
         return cur
+
+    '''
+    [Leetcode: Easy] (231) Power of Two, 2/4/2016
+
+    Given an integer, write a function to determine if it is a power of two.
+    '''
+    def isPowerOfTwo(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        if n == 0:
+            return False
+
+        '''
+        # Find the smallest power that satisfies n is larger than 2**power
+        # The only case that n is power of two is n == 2 ** power
+        # For example, n = 15; it ends up with finding power = 3,
+        # 15 != 2**3: thus return False
+
+        power = 0
+
+        while n > (2**power):
+            power += 1
+
+        return n == 2**power
+        '''
+
+        # The simplest way is to check (n) & (n - 1) == 0
+        # If n is the power of two, n can be represented as (100...0),
+        # n-1 would be (011...1) accordingly. Thus (n & n-1) should be always zero
+        return n & (n-1) == 0
+
+    '''
+    [Leetcode: Easy] (326) Power of Three, 2/4/2016
+
+    Given an integer, write a function to determine if it is a power of three.
+    (Followup) Could you do it without using any loop / recursion?
+    '''
+    def isPowerOfThree(self, n):
+        """
+        :type n: int
+        :rtype: bool
+        """
+        if n == 0:
+            return False
+
+        while n % 3 == 0:
+            n = n // 3
+
+        return n == 1
+
+    '''
+    [Leetcode: Easy] (190) Reverse Bits, 2/4/2016
+
+    Reverse bits of a given 32 bits unsigned integer.
+    For example,
+    given input 43261596 (represented in binary as 00000010100101000001111010011100),
+    return 964176192 (represented in binary as 00111001011110000010100101000000).
+
+    (Follow-up) If this function is called many times, how would you optimize it?
+    '''
+    def reverseBits(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+
+        # Represent a given binary with 32 digits
+        b = bin(n)[2:].zfill(32)
+
+        ans = '0b'
+        for i in range(len(b)-1, -1, -1):
+            ans += b[i]
+
+        return int(ans, 2)
+
+    '''
+    [Leetcode: Easy] (7) Reverse Integer, 2/4/2016
+    Reverse digits of an integer. Consider the sign and INT_MIX/INT_MAX
+
+    Example1: x = 123, return 321
+    Example2: x = -123, return -321
+    '''
+    def reverse(self, x):
+        """
+        :type x: int
+        :rtype: int
+        """
+
+        # Define the range of signed integer expression
+        INT_MAX = 2**31 - 1
+        INT_MIN = -1 * (2**31)
+
+        if x == 0 or x > INT_MAX:
+            return 0
+
+        v = str(abs(x))
+
+        # Reverse the string then examine the range when returning
+        ans = ''
+        for i in range(len(v)-1, -1, -1):
+            ans += v[i]
+
+        ans = int(ans) if x>0 else (-1 * int(ans))
+
+        return ans if INT_MIN <= ans <= INT_MAX else 0

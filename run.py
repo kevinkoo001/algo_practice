@@ -170,10 +170,30 @@ class CodeTest(object):
         new_head = self.leet.reverseList(x1)
         basicds.printList(new_head)
 
+    def leet_231(self):
+        print self.leet.isPowerOfTwo(10)
+        print self.leet.isPowerOfTwo(16)
+        print self.leet.isPowerOfTwo(2**20)
+        print self.leet.isPowerOfTwo(2**15 - 1)
+
+    def leet_326(self):
+        print self.leet.isPowerOfThree(10)
+        print self.leet.isPowerOfThree(27)
+        print self.leet.isPowerOfThree(3**10)
+        print self.leet.isPowerOfThree(3**20 + 1)
+
+    def leet_190(self):
+        print self.leet.reverseBits(43261596)
+
+    def leet_007(self):
+        print self.leet.reverse(1563847412)
+        print self.leet.reverse(9654534)
+        print self.leet.reverse(-1234567)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '206')
+    test_main('leet', '007')
