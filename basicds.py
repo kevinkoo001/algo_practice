@@ -9,6 +9,11 @@ class TreeNode(object):
         self.left = left
         self.right = right
 
+class Interval(object):
+     def __init__(self, s=0, e=0):
+         self.start = s
+         self.end = e
+
 # Code from http://rosettacode.org/wiki/Tree_traversal
 def levelorder(node, more=None):
     if node is not None:

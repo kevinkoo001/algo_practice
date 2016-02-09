@@ -1,3 +1,5 @@
+import basicds
+
 class Solution():
     def __init__(self):
         pass
@@ -795,3 +797,132 @@ class Solution():
                 return p.val == q.val and isSameTreeHelper(p.left, q.left) and isSameTreeHelper(p.right, q.right)
 
         return isSameTreeHelper(p, q)
+
+    '''
+    [Leetcode: Easy] (9) Palindrome Number, 2/6/2016
+    Determine whether an integer is a palindrome. Do this without extra space.
+    '''
+    def isPalindrome(self, x):
+        """
+        :type x: int
+        :rtype: bool
+        """
+
+        if x < 0:
+            return False
+        elif x / 10 == 0:
+            return True
+
+        digit = len(str(abs(x)))//2
+
+        if len(str(x)) % 2 != 0:
+            return str(x // (10**(digit+1))) == str(x % (10**digit)).zfill(digit)[::-1]
+        else:
+            return str(x // (10**(digit))) == str(x % (10**(digit))).zfill(digit)[::-1]
+
+
+    '''
+    [Leetcode: Hard] (140) Word Break II, 2/6/2016
+
+    Given a string s and a dictionary of words dict, add spaces in s to construct a sentence where each word is a valid dictionary word.
+
+    Return all such possible sentences.
+    For example, given
+    s = "catsanddog",
+    dict = ["cat", "cats", "and", "sand", "dog"].
+    A solution is ["cats and dog", "cat sand dog"].
+    '''
+    def wordBreak(self, s, wordDict):
+        # THIS NEEDS TO BE THOUGHT (Not My Solution!)
+        memo = {len(s): ['']}
+        def sentences(i):
+            if i not in memo:
+                memo[i] = [s[i:j] + (tail and ' ' + tail)
+                           for j in range(i+1, len(s)+1)
+                           if s[i:j] in wordDict
+                           for tail in sentences(j)]
+                print memo
+            return memo[i]
+        return sentences(0)
+
+    '''
+    [Leetcode: Hard] (57) Insert Interval, 2/6/2016
+    Given a set of non-overlapping intervals, insert a new interval into the intervals (merge if necessary).
+    You may assume that the intervals were initially sorted according to their start times.
+
+    Example 1:
+    Given intervals [1,3],[6,9], insert and merge [2,5] in as [1,5],[6,9].
+    Example 2:
+    Given [1,2],[3,5],[6,7],[8,10],[12,16], insert and merge [4,9] in as [1,2],[3,10],[12,16].
+    This is because the new interval [4,9] overlaps with [3,5],[6,7],[8,10].
+    '''
+    def insert(self, intervals, newInterval):
+        """
+        :type intervals: List[Interval]
+        :type newInterval: Interval
+        :rtype: List[Interval]
+        """
+
+        # The following code has a bug to fix. (NOT PASSED ALL CASES YET)
+        num_ranges = set()
+        nums = set()
+        newIntervals = []
+        dots = {}
+
+        # Suppose [s,e] represents s <= integers < e in num_ranges
+        for i in intervals:
+            for j in range(i.start, i.end, 1):
+                num_ranges.add(j)
+
+            # nums contains all edges to check special cases
+            for k in range(i.start, i.end+1, 1):
+                if not i.start == i.end:
+                    nums.add(k)
+
+            # Special case to handle in case of a dot! (i.e., (0,0), (1,1), ...)
+            if i.start == i.end and i.start not in nums:
+                dots[i.start] = i
+
+        # nums set() holds all integers in the given intervals including new newInterval
+        for new in range(newInterval.start, newInterval.end, 1):
+            num_ranges.add(new)
+
+        if newInterval.start == newInterval.end:
+            num_ranges.add(newInterval.start)
+
+        if newInterval.start == newInterval.end and newInterval.start not in nums:
+            dots[newInterval.start] = newInterval
+
+        num_ranges = sorted(num_ranges)
+        range_start = None
+
+        # By looking if adjacent number is consecutive, construct the order
+        for (i, j) in [(num_ranges[k], num_ranges[k+1]) for k in range(len(num_ranges) - 1)]:
+            if len(dots.keys()) > 0:
+                dot = sorted(dots.keys())[0]
+                if i > dot:
+                    newIntervals.append(dots[dot])
+                    dots.pop(dot)
+
+            if range_start == None:
+                range_start = i
+                v = basicds.Interval(s=i)
+                newIntervals.append(v)
+            if j - i > 1:
+                v.end = i+1
+                range_start = None
+            else:
+                pass
+
+
+        # Adjust the last range
+        if num_ranges[-1] == newInterval.start:
+            v.end = i+1
+            newIntervals.append(basicds.Interval(j, j))
+
+        elif j -i >= 2:
+            newIntervals.append(basicds.Interval(j, j+1))
+        else:
+            v.end = j+1
+
+        return newIntervals

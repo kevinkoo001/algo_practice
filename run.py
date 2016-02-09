@@ -232,10 +232,61 @@ class CodeTest(object):
 
         print self.leet.isSameTree(p2, q2)
 
+    def leet_009(self):
+        print self.leet.isPalindrome(12344321)
+        print self.leet.isPalindrome(123454321)
+        print self.leet.isPalindrome(123451)
+
+    def leet_140(self):
+        print self.leet.wordBreak("catsanddog", ["cat", "cats", "and", "sand", "dog", "catsand", "catsanddog"])
+
+    def leet_057(self):
+        def setA():
+            r1 = basicds.Interval(s=1, e=2)
+            r2 = basicds.Interval(s=3, e=5)
+            r3 = basicds.Interval(s=6, e=7)
+            r4 = basicds.Interval(s=8, e=10)
+            r5 = basicds.Interval(s=12, e=16)
+            range_list = list()
+            range_list.append(r1)
+            range_list.append(r2)
+            range_list.append(r3)
+            range_list.append(r4)
+            range_list.append(r5)
+            return range_list
+
+        def setB():
+            range_list = list()
+            r1 = basicds.Interval(s=2, e=5)
+            r2 = basicds.Interval(s=6, e=7)
+            r3 = basicds.Interval(s=8, e=9)
+            range_list.append(r1)
+            range_list.append(r2)
+            range_list.append(r3)
+            return range_list
+
+        def setC():
+            range_list = list()
+            r1 = basicds.Interval(s=0, e=1)
+            r2 = basicds.Interval(s=5, e=5)
+            r3 = basicds.Interval(s=6, e=7)
+            r4 = basicds.Interval(s=9, e=11)
+            range_list.append(r1)
+            range_list.append(r2)
+            range_list.append(r3)
+            range_list.append(r4)
+            return range_list
+
+        result = self.leet.insert(setA(), basicds.Interval(s=4, e=9))
+        #result = self.leet.insert(setB(), basicds.Interval(s=0, e=1))
+        #esult = self.leet.insert(setC(), basicds.Interval(s=50, e=50))
+        for interval in result:
+            print (interval.start, interval.end),
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '100')
+    test_main('leet', '057')
