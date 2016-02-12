@@ -925,7 +925,7 @@ class Solution():
         return newIntervals
 
     '''
-    [Leetcode: Hard] (111) Minimum Depth of Binary Tree, 2/12/2016
+    [Leetcode: Easy] (111) Minimum Depth of Binary Tree, 2/12/2016
     Given a binary tree, find its minimum depth.
     The minimum depth is the number of nodes along the shortest path
     from the root node down to the nearest leaf node.
@@ -946,3 +946,41 @@ class Solution():
 
         else:
             return 1 + min(self.minDepth(root.left), self.minDepth(root.right))
+
+    '''
+    [Leetcode: Easy] (101) Symmetric Tree, 2/12/2016
+    Given a binary tree, check whether it is a mirror of itself (ie, symmetric around its center).
+    For example, this binary tree is symmetric:
+         1
+       / \
+      2   2
+     / \ / \
+    3  4 4  3
+    '''
+    def isSymmetric(self, root):
+        """
+        :type root: TreeNode
+        :rtype: bool
+        """
+        def isSymmetricHelper(left, right):
+            # Both should be a leaf node
+            if left is None and right is None:
+                return True
+
+            # The structure of the subtree does not match each other, it is asymmetric
+            elif left is not None and right is None:
+                return False
+            elif left is None and right is not None:
+                return False
+
+            # When both nodes are end leaves, check the value. Also check the subtrees
+            # if (left.right == right.left) AND (left.left == right.right) recursively!
+            else:
+                return left.val == right.val and \
+                        isSymmetricHelper(left.right, right.left) and \
+                        isSymmetricHelper(left.left, right.right)
+
+        if root is None:
+            return True
+
+        return isSymmetricHelper(root.left, root.right)

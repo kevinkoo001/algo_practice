@@ -287,10 +287,16 @@ class CodeTest(object):
         root = basicds.TreeNode(4, basicds.TreeNode(7, basicds.TreeNode(2, None), None), basicds.TreeNode(1, None, None))
         print self.leet.minDepth(root)
 
+    def leet_101(self):
+        asymmetric_root = basicds.TreeNode(4, basicds.TreeNode(7, basicds.TreeNode(2, None), None), basicds.TreeNode(1, None, None))
+        symmetric_root = basicds.TreeNode(4, basicds.TreeNode(7, basicds.TreeNode(2, None), None), basicds.TreeNode(7, None, basicds.TreeNode(2)))
+        print self.leet.isSymmetric(symmetric_root)
+        print self.leet.isSymmetric(asymmetric_root)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '111')
+    test_main('leet', '101')
