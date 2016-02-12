@@ -283,10 +283,14 @@ class CodeTest(object):
         for interval in result:
             print (interval.start, interval.end),
 
+    def leet_111(self):
+        root = basicds.TreeNode(4, basicds.TreeNode(7, basicds.TreeNode(2, None), None), basicds.TreeNode(1, None, None))
+        print self.leet.minDepth(root)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '057')
+    test_main('leet', '111')

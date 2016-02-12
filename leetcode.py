@@ -109,9 +109,6 @@ class Solution():
         if root is None:
             return 0
 
-        if root.left is None and root.right is None:
-            return 1
-
         return 1 + max(self.maxDepth(root.left), self.maxDepth(root.right))
 
     '''
@@ -926,3 +923,26 @@ class Solution():
             v.end = j+1
 
         return newIntervals
+
+    '''
+    [Leetcode: Hard] (111) Minimum Depth of Binary Tree, 2/12/2016
+    Given a binary tree, find its minimum depth.
+    The minimum depth is the number of nodes along the shortest path
+    from the root node down to the nearest leaf node.
+    '''
+    def minDepth(self, root):
+        """
+        :type root: TreeNode
+        :rtype: int
+        """
+        if root is None:
+            return 0
+
+        elif root.left is None:
+            return 1 + self.minDepth(root.right)
+
+        elif root.right is None:
+            return 1 + self.minDepth(root.left)
+
+        else:
+            return 1 + min(self.minDepth(root.left), self.minDepth(root.right))
