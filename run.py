@@ -293,10 +293,26 @@ class CodeTest(object):
         print self.leet.isSymmetric(symmetric_root)
         print self.leet.isSymmetric(asymmetric_root)
 
+    def leet_205(self):
+        print self.leet.isIsomorphic('aab', 'bbc')
+        print self.leet.isIsomorphic('aa', 'bb')
+        print self.leet.isIsomorphic('ab', 'aa')
+
+    def leet_331(self):
+        print self.leet.isValidSerialization("9,#,92,#,#")
+        print self.leet.isValidSerialization("9,3,4,#,#,1,#,#,2,#,6,#,#")
+        print self.leet.isValidSerialization("#")
+        print self.leet.isValidSerialization("9,#,#,1")
+        print self.leet.isValidSerialization("1, #")
+
+    def leet_131(self):
+        print self.leet.partition("aab")
+        print self.leet.partition("aabcacba")
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '101')
+    test_main('leet', '205')

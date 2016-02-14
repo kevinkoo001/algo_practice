@@ -984,3 +984,117 @@ class Solution():
             return True
 
         return isSymmetricHelper(root.left, root.right)
+
+    '''
+    [Leetcode: Easy] (205) Isomorphic Strings, 2/13/2016
+    Given two strings s and t, determine if they are isomorphic.
+    Two strings are isomorphic if the characters in s can be replaced to get t.
+    All occurrences of a character must be replaced with another character while preserving the order of characters.
+    No two characters may map to the same character but a character may map to itself.
+    '''
+    def isIsomorphic(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: bool
+        """
+
+        if len(s) == 0 and len(t) == 0:
+            return True
+
+        mapper = {}
+
+        for i in range(len(s)):
+            if s[i] not in mapper:
+                if t[i] in mapper.values():
+                    return False
+                else:
+                    mapper[s[i]] = t[i]
+            else:
+                if mapper[s[i]] == t[i]:
+                    pass
+                else:
+                    return False
+
+        return True
+
+    '''
+    [Leetcode: Medium] (331) Verify Preorder Serialization of a Binary Tree, 2/13/2016
+
+        _9_
+        /   \
+       3     2
+      / \   / \
+     4   1  #  6
+    / \ / \   / \
+    # # # #   # #
+    For example, the above binary tree can be serialized to the string "9,3,4,#,#,1,#,#,2,#,6,#,#", where # represents a null node.
+    Given a string of comma separated values, verify whether it is a correct preorder traversal serialization of a binary tree. Find an algorithm without reconstructing the tree.
+    Each comma separated value in the string must be either an integer or a character '#' representing null pointer.
+    You may assume that the input format is always valid, for example it could never contain two consecutive commas such as "1,,3".
+    '''
+    def isValidSerialization(self, preorder):
+        """
+        :type preorder: str
+        :rtype: bool
+        """
+
+        nodes = preorder.split(',')
+        stack = []
+
+        # If there is a single leaf, it is True
+        if preorder == '#':
+            return True
+        # If any consecutive leaves has been found at first, it is False
+        elif nodes[0] == '#' and nodes[1] == '#':
+            return False
+
+        # Putting the node to the stack until '#' is found;
+        # If two consecutive sharps (##) are found, remove them with a previous node
+        # until the condition is met any longer (while stmt)
+        for n in range(len(nodes)):
+            if len(stack) > 1 and nodes[n] == '#':
+                if stack[-1] == '#':
+                    while len(stack) > 1 and stack[-1] == '#':
+                        stack.pop()
+                        stack.pop()
+
+            stack.append(nodes[n])
+
+        # Finally only a single '#' remains intact in stack, which means a valid pre-ordered list
+        return len(stack) == 1 and stack[0] == '#'
+
+    '''
+    [Leetcode: Medium] (131) Palindrome Partitioning, 2/13/2016
+    Given a string s, partition s such that every substring of the partition is a palindrome.
+    Return all possible palindrome partitioning of s.
+    For example, given s = "aab", Return
+    [
+        ["aa","b"],
+        ["a","a","b"]
+    ]
+    '''
+    def partition(self, s):
+        """
+        :type s: str
+        :rtype: List[List[str]]
+        """
+        def isPalindrome(s):
+            if len(s) == 1:
+                return True
+            if len(s) == 2:
+                return s[0] == s[1]
+
+            return s[0] == s[-1] and isPalindrome(s[1:-1])
+
+        # Need to look into how simple code just works more!
+        def dfs(s, palindrome, ans):
+            if len(s) == 0:
+                ans.append(palindrome)
+            for i in range(1, len(s)+1):
+                if isPalindrome(s[:i]):
+                    dfs(s[i:], palindrome+[s[:i]], ans)
+
+        ans = []
+        dfs(s, [], ans)
+        return ans
