@@ -309,10 +309,31 @@ class CodeTest(object):
         print self.leet.partition("aab")
         print self.leet.partition("aabcacba")
 
+
+    def leet_083(self):
+        node1 = basicds.ListNode(1)
+        node2 = basicds.ListNode(1)
+        node3 = basicds.ListNode(2)
+        node4 = basicds.ListNode(3)
+        node1.next = node2
+        node2.next = node3
+        node3.next = node4
+        head = node1
+        basicds.printList(head)
+        self.leet.deleteDuplicates(head)
+        basicds.printList(head)
+
+    def leet_027(self):
+        ar = [1,3,4,5,3,2,1,3,6,7,3,4]
+        target = 3
+        print "Original length of array: %d (%s)" % (len(ar), ar)
+        print "Removing target element: %d" % target
+        print "Array length after element removal: %d (%s)" % (self.leet.removeElement(ar, target), ar)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '205')
+    test_main('leet', '027')
