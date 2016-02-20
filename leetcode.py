@@ -1231,3 +1231,220 @@ class Solution():
                 print [nums[i]], j, [nums[i]] + j
                 res.append([nums[i]] + j)
         return res
+
+    '''
+    [Leetcode: Medium] (319) Bulb Switcher, 2/20/2016
+    There are n bulbs that are initially off. You first turn on all the bulbs.
+    Then, you turn off every second bulb. On the third round,
+    you toggle every third bulb (turning on if it's off or turning off if it's on).
+    For the nth round, you only toggle the last bulb. Find how many bulbs are on after n rounds.
+
+    For example, given n = 3.
+    At first, the three bulbs are [off, off, off].
+    After first round, the three bulbs are [on, on, on].
+    After second round, the three bulbs are [on, off, on].
+    After third round, the three bulbs are [on, off, off].
+    So you should return 1, because there is only one bulb is on.
+    '''
+
+    def bulbSwitch(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        # on: True, off: False
+
+        '''
+        # Naive approach:
+        #   1) Turn on and off the bulbs as instructions
+        #   2) Count the bulb-ons
+
+        if n == 0:
+            return 0
+
+        bulbs = [False] * n
+
+        # i: round, j: bulb location
+        for i in range(1, n+1):
+            j = i
+            while j <= n:
+                if bulbs[j-1] == False:
+                    bulbs[j-1] = True
+                else:
+                    bulbs[j-1] = False
+                j += i
+
+        return bulbs.count(True)
+        '''
+
+        # Let's focus on the number of toggles for each bulb at each (R)ound
+        #   1) 1st (R): all bulbs would be toggled (i.e., all turned on)
+        #   2) 2nd (R): bulbs of which multiple of 2 would be toggled.
+        #   3) 3rd (R): bulbs of which multiple of 3 would be toggled.
+        #   ...
+        #   n) nth (R): bulbs of which multiple of n would be toggled.
+
+        # Observation
+        #   1) The (j)th bulb would be toggled (touched) iff (i)th round is (j)'s divisor
+        #      ex) 6th bulb can be toggled at 1st, 2nd, 3rd, and 6th round
+        #   2) In other words, the number of toggles represents the number of divisors
+        #   3) The number of divisors can be computed with prime factorization
+        #      Generally, n = p_1^n_1 * p_2^n_2 * ... * p_k^n_k then pi(n) = (n_1+1)*...*(n_k+1)
+        #      ex) 12 = 2^2 * 3^1; hence 12 has (2+1)*(1+1) = 6 divisors (1,2,3,4,6,12)
+        #   4) Observe that even number of toggles leads to turn off the bulb in the end,
+        #      Because, the bulb is turned on in the beginning. (on->off->on->off->...)
+        #      We are looking for the number of bulbs to be turn on at the final round
+        #   5) The only case that the number of divisors can be odd is that j is a square number
+        #      ex) 1=1^2, 4=2^2, 9=3^2, 16=4^2, ... these bulbs would be touched 3 times (odd)
+        #   6) Note that n^2k form will be interpreted as (n^(k*2)) eventually
+        #      ex) 4^4 (256) has odd number of divisors, but it can be counted as 16^2
+
+        # Conclusion
+        #   -> Thus finding the number of toggles is identical with the problem to
+        #      count square numbers, less than n
+
+        '''
+        # Method A
+        toggles = 0
+        i = 1
+
+        while i*i <= n:
+            toggles += 1
+            i += 1
+
+        return toggles
+        '''
+
+        # Method B
+        import math
+        return int(math.sqrt(n))
+
+    '''
+    [Leetcode: Easy] (160) Intersection of Two Linked Lists, 2/20/2016
+    Write a program to find the node at which the intersection of two singly linked lists begins.
+    For example, the following two linked lists:
+
+    A:          a1 -> a2
+                       -\
+                         c1 -> c2 -> c3
+                       -/
+    B:     b1 -> b2 -> b3
+    '''
+    def getIntersectionNode(self, headA, headB):
+        """
+        :type head1, head1: ListNode
+        :rtype: ListNode
+        """
+
+        # Either header is None, then no intersection found
+        if headA == None or headB == None:
+            return None
+
+        ptrA, ptrB = headA, headB
+        lenA, lenB = 0, 0
+
+        # Walk two linked list until the end
+        while ptrA is not None:
+            lenA += 1
+            ptrA = ptrA.next
+
+        while ptrB is not None:
+            lenB += 1
+            ptrB = ptrB.next
+
+        # Adjust the pointer to compare LL-A with LL-B
+        diff = abs(lenA - lenB)
+        ptrA, ptrB = headA, headB
+
+        if lenA > lenB:
+            for i in range(diff):
+                ptrA = ptrA.next
+
+        if lenA < lenB:
+            for i in range(diff):
+                ptrB = ptrB.next
+
+        # Traverse each entry to find the intersection
+        while ptrA != ptrB:
+            ptrA = ptrA.next
+            ptrB = ptrB.next
+
+        return ptrA
+
+    '''
+    [Leetcode: Easy] (203) Remove Linked List Elements, 2/20/2016
+    Remove all elements from a linked list of integers that have value val.
+
+    Example
+    Given: 1 --> 2 --> 6 --> 3 --> 4 --> 5 --> 6, val = 6
+    Return: 1 --> 2 --> 3 --> 4 --> 5
+    '''
+    def removeElements(self, head, val):
+        """
+        :type head: ListNode
+        :type val: int
+        :rtype: ListNode
+        """
+
+        # Case of empty linked list
+        if head is None:
+            return None
+
+        # Initialize the pointers
+        cur = head
+        prev = cur
+
+        while cur is not None:
+            # 1. When the node to remove is head; adjust the head
+            if cur == head and cur.val == val:
+                head = cur.next
+                cur = head
+                prev = cur
+
+            # 2. When the node to remove is tail; update the tail
+            elif cur.next == None and cur.val == val:
+                prev.next = None
+                break
+
+            # 3. General case to find the value to remove
+            elif cur != head and cur.val == val:
+                prev.next = cur.next
+                cur = cur.next
+
+            # 4. Otherwise go the the next node
+            else:
+                prev = cur
+                cur = cur.next
+
+        return head
+
+    '''
+    [Leetcode: Medium] (141) Linked List Cycle, 2/20/2016
+    Given a linked list, determine if it has a cycle in it.
+
+    Follow up:
+    Can you solve it without using extra space?
+    '''
+    def hasCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+
+        # When the linked list is empty or has only a sinlge element
+        if head is None or head.next is None:
+            return False
+
+        # Define two pointers that has different speed
+        slow = head
+        fast = head
+
+        # If there is any cycle, at some point,
+        # slow and fast pointer will meet each other
+        while fast is not None and fast.next is not None:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                return True
+
+        return False

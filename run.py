@@ -336,6 +336,52 @@ class CodeTest(object):
     def leet_046(self):
         self.leet.permute([1,2,3,4])
 
+    def leet_319(self):
+        print self.leet.bulbSwitch(1000)
+
+    def leet_160(self):
+        node1 = basicds.ListNode(1)
+        node2 = basicds.ListNode(1)
+        node3 = basicds.ListNode(2)
+        node4 = basicds.ListNode(3)
+        node5 = basicds.ListNode(10)
+        node1.next = node2
+        node2.next = node3
+        node3.next = node4
+        node5.next = node4
+        headA = node1
+        headB = node5
+
+        # intersection of the node -> node4 (node4.val = 3)
+        intersection = self.leet.getIntersectionNode(headA, headB)
+        print intersection.val
+
+    def leet_203(self):
+        node1 = basicds.ListNode(1)
+        node2 = basicds.ListNode(1)
+        node3 = basicds.ListNode(2)
+        node4 = basicds.ListNode(3)
+        node5 = basicds.ListNode(10)
+        node1.next = node2
+        node2.next = node3
+        node3.next = node4
+        node4.next = node5
+        head = node1
+        basicds.printList(node1)
+        self.leet.removeElements(head, 3)
+        basicds.printList(node1)
+
+    def leet_141(self):
+        node1 = basicds.ListNode(1)
+        node2 = basicds.ListNode(1)
+        node3 = basicds.ListNode(2)
+        node4 = basicds.ListNode(3)
+        node1.next = node2
+        node2.next = node3
+        node3.next = node4
+        node4.next = node2
+        head = node1
+        print self.leet.hasCycle(head)
 
 def test_main(kind, prob):
     ct = CodeTest(kind)
@@ -343,4 +389,4 @@ def test_main(kind, prob):
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '046')
+    test_main('leet', '141')
