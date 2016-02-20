@@ -330,10 +330,17 @@ class CodeTest(object):
         print "Removing target element: %d" % target
         print "Array length after element removal: %d (%s)" % (self.leet.removeElement(ar, target), ar)
 
+    def leet_204(self):
+        print self.leet.countPrimes(100000)
+
+    def leet_046(self):
+        self.leet.permute([1,2,3,4])
+
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '027')
+    test_main('leet', '046')

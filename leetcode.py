@@ -1147,3 +1147,87 @@ class Solution():
             nums.remove(val)
 
         return len(nums)
+
+    '''
+    [Leetcode: Easy] (27) Remove Element, 2/20/2016
+    Count the number of prime numbers less than a non-negative number, n.
+    '''
+    def countPrimes(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+
+        '''
+        # Naive way: O(n^2)
+        def isPrime(x, primes):
+            for j in [x for x in primes]:
+                if i % j == 0:
+                    return False
+                    pass
+            return True
+
+        primes = [2]
+
+        for i in range(2, n+1):
+            if isPrime(i, primes) and i not in primes:
+                primes.append(i)
+
+        return len(primes) if n > 1 else 0
+        '''
+
+        if n <= 1:
+            return 0
+
+        # Initialize the sieve
+        # [0, 1, 2, 3, 4, 5, 6, ...]
+        # [F, F, T, T, T, T, T, ...]
+        prime = [False, False] + [True]*(n-2)
+
+        x = 2
+        while x * x < n:
+            if prime[x]:
+                s = x * x   # Starting point at the sieve
+                while s < n:
+                    prime[s] = False
+                    s += x
+            x += 1
+
+        return prime.count(True)
+
+    '''
+    [Leetcode: Easy] (46) Permutations, 2/20/2016
+    Given a collection of distinct numbers, return all possible permutations.
+
+    For example,
+    [1,2,3] have the following permutations:
+    [1,2,3], [1,3,2], [2,1,3], [2,3,1], [3,1,2], and [3,2,1]
+    '''
+    def permute(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        if len(nums) < 1:
+            return [nums]
+
+        '''
+        # Another solution
+        def permuteHelper(nums, p, permutations):
+            if not nums:
+                permutations.append(p)
+            else:
+                for n in nums:
+                    permuteHelper(nums-set([n]), p+[n], permutations)
+
+        permutations = []
+        permuteHelper(set(nums), [], permutations)
+        return permutations
+        '''
+
+        res = []
+        for i in range(len(nums)):
+            for j in self.permute(nums[:i] + nums[i+1:]):
+                print [nums[i]], j, [nums[i]] + j
+                res.append([nums[i]] + j)
+        return res
