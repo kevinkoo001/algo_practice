@@ -1098,3 +1098,52 @@ class Solution():
         ans = []
         dfs(s, [], ans)
         return ans
+
+    '''
+    [Leetcode: Easy] (83) Palindrome Partitioning, 2/18/2016
+    Given a sorted linked list, delete all duplicates such that each element appear only once.
+    For example,
+    Given 1->1->2, return 1->2.
+    Given 1->1->2->3->3, return 1->2->3.
+    '''
+    def deleteDuplicates(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        if head == None:
+            return None
+
+        # Define two pointers: prev and cur
+        prev = head
+        cur = prev.next
+
+        while cur is not None:
+            # As the linked list is sorted, if the value of prev and cur is the same;
+            # Remove the link and update two pointers
+            if prev.val == prev.next.val:
+                prev.next = cur.next
+                cur = cur.next
+
+            # Otherwise just update the pointers, pointing next node
+            else:
+                prev = cur
+                cur = cur.next
+
+        return head
+
+    '''
+    [Leetcode: Easy] (27) Remove Element, 2/18/2016
+    Given an array and a value, remove all instances of that value in place and return the new length.
+    The order of elements can be changed. It doesn't matter what you leave beyond the new length.
+    '''
+    def removeElement(self, nums, val):
+        """
+        :type nums: List[int]
+        :type val: int
+        :rtype: int
+        """
+        for i in range(nums.count(val)):
+            nums.remove(val)
+
+        return len(nums)
