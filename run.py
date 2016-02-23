@@ -383,10 +383,24 @@ class CodeTest(object):
         head = node1
         print self.leet.hasCycle(head)
 
+    def leet_142(self):
+        node1 = basicds.ListNode(1)
+        node2 = basicds.ListNode(2)
+        node3 = basicds.ListNode(3)
+        node4 = basicds.ListNode(4)
+        node5 = basicds.ListNode(5)
+        node1.next = node2
+        node2.next = node3
+        node3.next = node4
+        node4.next = node5
+        node5.next = node3
+        head = node1
+        print self.leet.detectCycle(head).val
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '141')
+    test_main('leet', '142')

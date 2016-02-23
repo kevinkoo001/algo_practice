@@ -1196,7 +1196,7 @@ class Solution():
         return prime.count(True)
 
     '''
-    [Leetcode: Easy] (46) Permutations, 2/20/2016
+    [Leetcode: Medium] (46) Permutations, 2/20/2016
     Given a collection of distinct numbers, return all possible permutations.
 
     For example,
@@ -1448,3 +1448,67 @@ class Solution():
                 return True
 
         return False
+
+    '''
+    [Leetcode: Medium] (142) Linked List Cycle, 2/22/2016
+    Given a linked list, return the node where the cycle begins. If there is no cycle, return null.
+    Note: Do not modify the linked list.
+
+    Follow up:
+    Can you solve it without using extra space?
+    '''
+
+    def detectCycle(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        # Define two pointers - (s)low and (f)ast (2x faster)
+        # Let x: the distance to the node that starts a cycle
+        # Let y: the distance from x to the point
+        #        where two pointers meet for the first time in a cycle
+        # Let t: the distance from y to t
+        # Let s and f: the distance that slow/fast pointer moves respectively
+
+        # Observations
+        # (a) x + y = s
+        # (b) x + y + k(t + y) = f = 2s (where k is # of cycles that f moves)
+        # (c) (b)-(a) = k(t + y) = s = x + y
+        # (d) From (b), Should be k = 1 and t = x
+
+        # Solution
+        # (a) Find the location (x + y) that two pointers meet for the first time
+        # (b) Initialize the slow pointer to head again
+        # (c) Start moving the s, and start moving the f from the distance (x + y)
+        # (d) The node to begin a cycle would be the location when s and f meet due to t = x
+
+        # Handling special case - the # of node is either 0 or 1
+        if head is None or head.next is None:
+            return None
+
+        # Handling special case - head has the cycle (head == tail)
+        if head == head.next or head == head.next.next:
+            return head
+
+        slow = head
+        fast = head
+
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                break
+
+        # If fast pointer reaches None, there is no detected cycle.
+        # Otherwise, f is pointing to the location of (a)
+        if slow == fast:
+            # Initialize s pointer again as described in (b)
+            slow = head
+
+            # Find the location to begin a cycle (t=x) like (c) and (d)
+            while slow != fast:
+                slow = slow.next
+                fast = fast.next
+            return slow
+
+        return None
