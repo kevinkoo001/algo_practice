@@ -1512,3 +1512,93 @@ class Solution():
             return slow
 
         return None
+
+    '''
+    [Leetcode: Medium] (92) Reverse Linked List II, 2/27/2016
+    Reverse a linked list from position m to n. Do it in-place and in one-pass.
+
+    For example:
+    Given 1->2->3->4->5->NULL, m = 2 and n = 4,
+    return 1->4->3->2->5->NULL.
+    '''
+    def reverseBetween(self, head, m, n):
+        """
+        :type head: ListNode
+        :type m: int
+        :type n: int
+        :rtype: ListNode
+        """
+
+        # Handling weird cases
+        if m > n or m <= 0:
+            return None
+
+        # If the number of node is less than 2 then return head
+        if head == None or head.next == None or m == n:
+            return head
+
+        # Initialization
+        prev = head
+        cur = prev
+        cnt = 1
+
+        while cnt <= n:
+            # Move forward two pointers until m
+            if cnt <= m:
+                # Store the pointers to be updated later on (at n)
+                if cnt == m:
+                    left_m = prev
+                    right_n = cur
+                prev = cur
+                cur = cur.next
+
+            # Reverse the pointers in the middle
+            elif m < cnt < n:
+                tmp = prev
+                prev = cur
+                cur = cur.next
+                prev.next = tmp
+
+            # Update two pointers left_m and right_n when arriving at the position n
+            elif cnt == n:
+                left_m.next = cur
+                right_n.next = cur.next
+                tmp = prev
+                prev = cur
+                cur = cur.next
+                prev.next = tmp
+
+            cnt += 1
+
+        # Return head when m > 2, or prev (pointing to the new head)
+        return head if m != 1 else prev
+
+    '''
+    [Leetcode: Easy] (303) Range Sum Query - Immutable, 2/27/2016
+    Given nums = [-2, 0, 3, -5, 2, -1]
+    sumRange(0, 2) -> 1
+    sumRange(2, 5) -> -1
+    sumRange(0, 5) -> -3
+    Note
+        You may assume that the array does not change.
+        There are many calls to sumRange function.
+    '''
+    class NumArray(object):
+        def __init__(self, nums):
+            """
+            initialize your data structure here.
+            :type nums: List[int]
+            """
+            # Define the table for dynamic programming
+            #    that has all sums from the first element to the current
+            self.dp = [sum(nums[0:i+1]) for i in range(len(nums))]
+
+        def sumRange(self, i, j):
+            """
+            sum of elements nums[i..j], inclusive.
+            :type i: int
+            :type j: int
+            :rtype: int
+            """
+            # Sum of the range can be obtained by subtracting dp[j] - dp[i-1]
+            return self.dp[j] if i == 0 else self.dp[j] - self.dp[i-1]
