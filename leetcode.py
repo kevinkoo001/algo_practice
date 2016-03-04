@@ -1602,3 +1602,185 @@ class Solution():
             """
             # Sum of the range can be obtained by subtracting dp[j] - dp[i-1]
             return self.dp[j] if i == 0 else self.dp[j] - self.dp[i-1]
+
+    '''
+    [Leetcode: Easy] (198) House Robber, 3/3/2016
+
+    You are a professional robber planning to rob houses along a street.
+    Each house has a certain amount of money stashed, the only constraint stopping you from robbing
+    each of them is that adjacent houses have security system connected and
+    it will automatically contact the police if two adjacent houses were broken into on the same night.
+    Given a list of non-negative integers representing the amount of money of each house,
+    determine the maximum amount of money you can rob tonight without alerting the police.
+    '''
+    def rob(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+
+        if len(nums) == 0:
+            return 0
+
+        if len(nums) == 1 or len(nums) == 2:
+            return max(nums)
+
+        # Initialize DP table
+        dp = [nums[0], max(nums[0], nums[1])]
+
+        # For each pair, check if which is bigger: dp[i-1], nums[i] + dp[j]
+        for i in range(2, len(nums)):
+            dp.append(-1)
+            for j in range(i-1):
+                dp[i] = max(dp[i-1], nums[i] + dp[j])
+
+        return max(dp[-1], dp[-2])
+
+    '''
+    [Leetcode: Medium] (136) Single Number I, 3/4/2016
+
+    Given an array of integers, every element appears twice except for one. Find that single one.
+    Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+    '''
+    def singleNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+
+        # By looking at the numbers in nums one by one
+        # If we have not seen the number, push it to the stack (res)
+        # Otherwise pop it. Only single element remains there in the end!
+
+        '''
+        # Method A using a list
+        res = list()
+        for i in range(len(nums)):
+            if not nums[i] in res:
+                res.append(nums[i])
+            else:
+                res.remove(nums[i])
+
+        return res[0]
+        '''
+
+        # Method B using a dictionary (faster due to hash)
+        ht = dict()
+
+        for i in range(len(nums)):
+            if not nums[i] in ht:
+                ht[nums[i]] = 1
+            else:
+                ht.pop(nums[i])
+
+        return ht.keys()[0]
+
+    '''
+    [Leetcode: Medium] (137) Single Number II, 3/4/2016
+
+    Given an array of integers, every element appears three times except for one. Find that single one.
+    Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+    '''
+    def singleNumber2(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        ht = dict()
+
+        # Very similar to 136, but we don't need to care # of times
+        # If the number is more than 1, just pop off of the hash table!
+        for i in range(len(nums)):
+            if nums[i] not in ht:
+                ht[nums[i]] = 1
+            elif ht[nums[i]] == 2:
+                ht.pop(nums[i])
+            else:
+                ht[nums[i]] += 1
+
+        return ht.keys()[0]
+
+    '''
+    [Leetcode: Medium] (260) Single Number III, 3/4/2016
+
+    Given an array of numbers nums, in which exactly two elements appear only once and
+    all the other elements appear exactly twice. Find the two elements that appear only once.
+    For example:
+    Given nums = [1, 2, 1, 3, 2, 5], return [3, 5].
+
+    Note:
+    The order of the result is not important. So in the above example, [5, 3] is also correct.
+    Your algorithm should run in linear runtime complexity. Could you implement it using only constant space complexity?
+    '''
+    def singleNumber3(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+
+        # This problem can be easily solved using exactly the same approach with 136 and 137!
+        ht = dict()
+
+        for i in range(len(nums)):
+            if nums[i] not in ht:
+                ht[nums[i]] = 1
+            else:
+                ht.pop(nums[i])
+
+        return ht.keys()
+
+    '''
+    [Leetcode: Medium] (125) Valid Palindrome, 3/4/2016
+
+    Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
+    For example,
+        "A man, a plan, a canal: Panama" is a palindrome.
+        "race a car" is not a palindrome.
+    '''
+    def isPalindrome2(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+
+        '''
+        # The following is a valid answer, but somehow leetcode complains the time constraint.
+
+        def isPalindromeHelper(s):
+            res = True
+            for i in range(len(s)//2):
+                if s[i] != s[-i-1]:
+                    res = False
+            return res
+
+        def sanitizer(s):
+            res = ''
+            for i in range(len(s)):
+                if 'a' <= s[i] < 'z' or 'A' <= s[i] <= 'Z' or '0' <= s[i] <= '9':
+                    res += s[i]
+            return res.lower()
+
+        if len(sanitizer(s)) == 0:
+            return True
+
+        return isPalindromeHelper(sanitizer(s))
+        '''
+
+        # Define two index pointers (start, end)
+        si, ei = 0, len(s)-1
+
+        while si < ei:
+            # Move to a valid starting/ending index until consecutive comparison can be made
+            while si < ei and not s[si].isalnum():
+                si += 1
+            while si < ei and not s[ei].isalnum():
+                ei -= 1
+
+            # Compare two characters where two pointers point to
+            if si < ei and s[si].lower() != s[ei].lower():
+                return False
+
+            si += 1
+            ei -= 1
+
+        return True
