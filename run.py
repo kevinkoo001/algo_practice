@@ -436,10 +436,16 @@ class CodeTest(object):
         str = 'abcdedcba'
         print self.leet.isPalindrome2(str)
 
+    def leet_088(self):
+        nums1 = [1,4,5,7,9,0,0,0,0]
+        nums2 = [2,6,8,10]
+        self.leet.merge(nums1, 5, nums2, 4)
+        print nums1
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '125')
+    test_main('leet', '088')
