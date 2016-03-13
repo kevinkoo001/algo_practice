@@ -1818,3 +1818,163 @@ class Solution():
         # Fill out the remaining elements in nums1
         for x in range(j+1):
             nums1[x] = nums2[x]
+
+    '''
+    [Leetcode: Easy] (118) Pascal's Triangle, 3/13/2016
+
+    Given numRows, generate the first numRows of Pascal's triangle.
+    For example, given numRows = 5, return
+    [[1], [1,1], [1,2,1], [1,3,3,1], [1,4,6,4,1]]
+    '''
+    def generatePascal(self, numRows):
+        """
+        :type numRows: int
+        :rtype: List[List[int]]
+        """
+
+        def generateRow(row, curList):
+            if row < 3:
+                return [1] * row
+
+            # Generate the Pascal's triangle at the row
+            #  a) Get the last element of the list
+            #  b) Compute all elements that consist of the sum of two consecutive numbers
+            #  c) Attach the first and the last element which are always 1
+            return [1] + [curList[-1][x]+curList[-1][x+1] for x in range(len(curList[-1])-1)] + [1]
+
+
+        if numRows <= 0:
+            return []
+
+        ans = []
+
+        for i in range(1, numRows + 1):
+            ans.append(generateRow(i, ans))
+
+        return ans
+
+    '''
+    [Leetcode: Easy] (67) Add Binary, 3/13/2016
+
+    Given two binary strings, return their sum (also a binary string).
+    For example, a = "11", b = "1", Return "100".
+    '''
+    def addBinary(self, a, b):
+        """
+        :type a: str
+        :type b: str
+        :rtype: str
+        """
+
+        def digitMatch(s, n):
+            return s.zfill(n)
+
+        if a == '0' and b == '0':
+            return '0'
+
+        # Sanitizing the size of two digits
+        if len(a) > len(b):
+            b = digitMatch(b, len(a))
+        else:
+            a = digitMatch(a, len(b))
+
+        ans = ''
+        carry = 0
+
+        for i in range(len(a)-1, -1, -1):
+            # Check out output digit and carry together
+            digitsum = int(a[i]) + int(b[i]) + carry
+            ans += str(digitsum % 2)
+
+            if digitsum >= 2:
+                carry = 1
+            else:
+                carry = 0
+
+        # If there is a carry left in the end, append it
+        if carry == 1:
+            ans += '1'
+
+        # Return the answer in reverse order
+        return ans[::-1]
+
+    '''
+    [Leetcode: Easy] (26) Remove Duplicates from Sorted Array, 3/13/2016
+
+    Given a sorted array, remove the duplicates in place
+    such that each element appear only once and return the new length.
+    Do not allocate extra space for another array, you must do this in place with constant memory.
+
+    For example,
+    Given input array nums = [1,1,2],
+    Your function should return length = 2, with the first two elements of nums
+    being 1 and 2 respectively. It doesn't matter what you leave beyond the new length.
+    '''
+    def removeDuplicates(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+
+        if len(nums) == 0:
+            return 0
+
+        # Initialize the pointer to store a unique element
+        pos = 1
+
+        # Keep checking if nums[i-1] == nums[i]
+        for cur in range(1, len(nums)):
+
+            # If the same, move the cur ptr
+            if nums[cur-1] == nums[cur]:
+                pass
+
+            # If not, store it to the position of pos ptr
+            else:
+                nums[pos] = nums[cur]
+                pos += 1
+
+        return pos
+
+    '''
+    [Leetcode: Easy] (20) Valid Parentheses, 3/13/2016
+
+    Given a string containing just the characters '(', ')', '{', '}', '[' and ']',
+    determine if the input string is valid.
+
+    The brackets must close in the correct order,
+    "()" and "()[]{}" are all valid but "(]" and "([)]" are not.
+    '''
+    def isValid(self, s):
+        """
+        :type s: str
+        :rtype: bool
+        """
+
+        if len(s) == 0:
+            return True
+
+        pair = {')':'(', '}':'{', ']':'['}
+        stack = []
+
+        for p in s:
+
+            # Keep pushing an open parenthesis on the stack
+            if p == '(' or p == '{' or p == '[':
+                stack.append(p)
+
+            else:
+
+                # If something comes in without open parenthesis, invalid
+                if len(stack) == 0:
+                    return False
+
+                # If close parenthesis matches another pair, pop it
+                if pair[p] == stack[-1]:
+                    stack.pop()
+
+                # If any of them does not match, invalid
+                else:
+                    return False
+
+        return len(stack) == 0
