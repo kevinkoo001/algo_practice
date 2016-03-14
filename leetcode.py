@@ -1978,3 +1978,71 @@ class Solution():
                     return False
 
         return len(stack) == 0
+
+    '''
+    [Leetcode: Easy] (172) Factorial Trailing Zeroes, 3/14/2016
+
+    Given an integer n, return the number of trailing zeroes in n!.
+    Note: Your solution should be in logarithmic time complexity.
+    '''
+    def trailingZeroes(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+
+        # 2 * 5 = 10; increases a single digit simply
+
+        # a) Every multiple of 5 increases a digit
+        # b) x = (even) * (5 ^ i) where x < n, i=2,3,4, ...
+        # Ref. http://www.purplemath.com/modules/factzero.htm
+
+        trails = 0
+
+        i = 1
+        while (5 ** i) <= n:
+            trails += (n // (5 ** i))
+            i += 1
+
+        return trails
+
+    '''
+    [Leetcode: Easy] (38) Count and Say, 3/14/2016
+
+    The count-and-say sequence is the sequence of integers beginning as follows:
+    1, 11, 21, 1211, 111221, ...
+
+    1 is read off as "one 1" or 11.
+    11 is read off as "two 1s" or 21.
+    21 is read off as "one 2, then one 1" or 1211
+    '''
+    def countAndSay(self, n):
+        """
+        :type n: int
+        :rtype: str
+        """
+
+        def readNext(s):
+            new_cnt = ''
+            cnt = 1
+
+            # Read off the next number
+            for i in range(1, len(s)):
+                if s[i-1] == s[i]:
+                    cnt += 1
+                else:
+                    new_cnt += str(cnt) + s[i-1]
+                    cnt = 1
+
+            # Read the last (remaining) element
+            new_cnt += str(cnt) + s[i]
+            return new_cnt
+
+        # Initialize the first element
+        cntArray = ['1', '11']
+
+        # Generate 'count-and-say' numbers
+        for i in range(2, n):
+            cntArray.append(readNext(cntArray[-1]))
+
+        return cntArray[n-1]

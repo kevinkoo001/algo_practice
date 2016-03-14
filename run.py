@@ -461,10 +461,22 @@ class CodeTest(object):
         print self.leet.isValid('(((())))[{}]{[]}')
         print self.leet.isValid('(((()}]()')
 
+    def leet_172(self):
+        print self.leet.trailingZeroes(5)
+        print self.leet.trailingZeroes(30)
+        print self.leet.trailingZeroes(1000)
+        print self.leet.trailingZeroes(10000)
+
+    def leet_038(self):
+        print self.leet.countAndSay(3)
+        print self.leet.countAndSay(4)
+        print self.leet.countAndSay(5)
+        print self.leet.countAndSay(12)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '020')
+    test_main('leet', '038')
