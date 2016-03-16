@@ -2046,3 +2046,123 @@ class Solution():
             cntArray.append(readNext(cntArray[-1]))
 
         return cntArray[n-1]
+
+    '''
+    [Leetcode: Easy] (112) Path Sum, 3/15/2016
+
+    Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that adding up all the values along the path equals the given sum.
+
+    For example:
+    Given the below binary tree and sum = 22,
+                  5
+                 / \
+                4   8
+               /   / \
+              11  13  4
+             /  \      \
+            7    2      1
+    return true, as there exist a root-to-leaf path 5->4->11->2 which sum is 22.
+    '''
+    def hasPathSum(self, root, sum):
+        """
+        :type root: TreeNode
+        :type sum: int
+        :rtype: bool
+        """
+
+        def curSum(root, sum, s):
+
+            # Base case; reaches the bottom w/o obtaining a given sum
+            if root == None:
+                return False
+
+            # Return true iff the node is a leaf and the condition is met
+            elif root.left == None and root.right == None and root.val + s == sum:
+                return True
+
+            # Recursively search the tree
+            else:
+                return curSum(root.left, sum, root.val + s) or curSum(root.right, sum, root.val + s)
+
+        return curSum(root, sum, 0)
+
+    '''
+    [Leetcode: Easy] (19) Remove Nth Node From End of List, 3/16/2016
+
+    Given a linked list, remove the nth node from the end of list and return its head.
+
+    For example,
+    Given linked list: 1->2->3->4->5, and n = 2.
+    After removing the second node from the end, the linked list becomes 1->2->3->5.
+    Note:
+        Given n will always be valid.
+        Try to do this in one pass.
+    '''
+    def removeNthFromEnd(self, head, n):
+        """
+        :type head: ListNode
+        :type n: int
+        :rtype: ListNode
+        """
+
+        if head == None or n < 1:
+            return None
+
+        ptr = head
+        total = 0
+
+        # Obtain the total number of nodes in a linked list
+        while ptr:
+            total += 1
+            ptr = ptr.next
+
+        # Special cases when removing the first or the last node
+        if total == 1:
+            return None
+
+        if total == n:
+            return head.next
+
+        # Move the pointer to the pre-position of the node to be removed
+        ptr = head
+        for i in range(total-(n+1)):
+            ptr = ptr.next
+
+        # If removing node is the last one
+        if n == 1:
+            ptr.next = None
+
+        # Update the pointer otherwise
+        else:
+            newNext = ptr.next.next
+            ptr.next = newNext
+
+        return head
+
+    '''
+    [Leetcode: Easy] (58) Length of Last Word, 3/16/2016
+
+    Given a string s consists of upper/lower-case alphabets and
+    empty space characters ' ', return the length of last word in the string.
+    If the last word does not exist, return 0.
+    Note: A word is defined as a character sequence consists of
+    non-space characters only.
+
+    For example,
+    Given s = "Hello World",
+    return 5.
+    '''
+    def lengthOfLastWord(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+
+        if len(s) == 0:
+            return 0
+
+        # Split all words with the delimeter as space
+        all_words = [x for x in s.split(' ') if len(x) > 0]
+
+        # Return the length of the last word, or 0 if empty
+        return len(all_words[-1]) if len(all_words) > 0 else 0

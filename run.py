@@ -473,10 +473,40 @@ class CodeTest(object):
         print self.leet.countAndSay(5)
         print self.leet.countAndSay(12)
 
+    def leet_112(self):
+        root = basicds.TreeNode(5)
+        root.left = basicds.TreeNode(4)
+        root.right = basicds.TreeNode(8)
+        root.left.left = basicds.TreeNode(11)
+        root.left.left.left = basicds.TreeNode(7)
+        root.right.left = basicds.TreeNode(13)
+        root.right.right = basicds.TreeNode(4)
+        root.right.right.right = basicds.TreeNode(1)
+        print self.leet.hasPathSum(root, 22)
+        print self.leet.hasPathSum(root, 13)
+        print self.leet.hasPathSum(root, 18)
+
+    def leet_019(self):
+        head = basicds.ListNode(1)
+        n1 = basicds.ListNode(3)
+        n2 = basicds.ListNode(5)
+        n3 = basicds.ListNode(6)
+        head.next, n1.next, n2.next, n3.next = n1, n2, n3, None
+        basicds.printList(head)
+        self.leet.removeNthFromEnd(head, 1)
+        basicds.printList(head)
+        self.leet.removeNthFromEnd(head, 2)
+        basicds.printList(head)
+
+    def leet_058(self):
+        strs = [" ", "a ", "Hello World", "Wow this is Strings  "]
+        for str in strs:
+            print self.leet.lengthOfLastWord(str)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '038')
+    test_main('leet', '058')
