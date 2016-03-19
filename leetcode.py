@@ -2261,3 +2261,38 @@ class Solution():
 
         # Return the length of the last word, or 0 if empty
         return len(all_words[-1]) if len(all_words) > 0 else 0
+
+    '''
+    [Leetcode: Easy] (223) Rectangle Area, 3/19/2016
+
+    Find the total area covered by two rectilinear rectangles in a 2D plane.
+    Each rectangle is defined by its bottom left corner and top right corner.
+    Assume that the total area is never beyond the maximum possible value of int
+    '''
+    def computeArea(self, A, B, C, D, E, F, G, H):
+        """
+        :type A: int
+        :type B: int
+        :type C: int
+        :type D: int
+        :type E: int
+        :type F: int
+        :type G: int
+        :type H: int
+        :rtype: int
+        """
+
+        area = (C-A)*(D-B)+(G-E)*(H-F)
+
+        # Case 1) two squares has no region to share
+        if (G-E)+(C-A) <= abs(max(C,G)-min(A,E)) or (D-B) + (H-F) <= abs(max(D,H)-min(B,F)):
+            return area
+
+        # Case 2) one square includes another
+        elif (E<A and C<G and F<B and D<H) or (E>A and C>G and F>B and D>H):
+            return (max(C,G)-min(A,E))*(max(D,H)-min(B,F))
+
+        # Case 3) two squares has some region to share otherwise
+        else:
+            intersect = min(G-A,C-E,C-A,G-E) * min(D-F,H-B,D-B,H-F)
+            return area - intersect

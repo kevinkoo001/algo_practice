@@ -518,10 +518,13 @@ class CodeTest(object):
         for str in strs:
             print self.leet.lengthOfLastWord(str)
 
+    def leet_223(self):
+        print self.leet.computeArea(-2, -2, 2, 2, -3, -3, -2, -2)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '058')
+    test_main('leet', '223')
