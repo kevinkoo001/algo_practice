@@ -461,10 +461,25 @@ class CodeTest(object):
         print self.leet.isValid('(((())))[{}]{[]}')
         print self.leet.isValid('(((()}]()')
 
+    def leet_338(self):
+        print self.leet.countBits(20)
+
+    def leet_146(self):
+        lru = self.leet.LRUCache(3)
+        ans = []
+        lru.set(1, 3)
+        lru.set(2, 4)
+        ans.append(lru.get(2))
+        lru.set(3, 6)
+        ans.append(lru.get(5))
+        ans.append(lru.get(3))
+        ans.append(lru.get(1))
+        print ans
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '020')
+    test_main('leet', '146')

@@ -1978,3 +1978,98 @@ class Solution():
                     return False
 
         return len(stack) == 0
+
+    '''
+    [Leetcode: Medium] (338) Counting Bits, 3/19/2016
+
+    Given a non negative integer number num. For every numbers i in the range 0 <= i <= num
+    calculate the number of 1's in their binary representation and return them as an array.
+    Example:
+    For num = 5 you should return [0,1,1,2,1,2].
+    '''
+    def countBits(self, num):
+        """
+        :type num: int
+        :rtype: List[int]
+        """
+
+        '''
+        # With built-in func in python
+        res = []
+        for i in range(num + 1):
+            res.append(bin(i).count('1'))
+
+        return res
+        '''
+
+        # Compute the biggest power less than n
+        power = 0
+        tmp = num
+
+        while tmp > 0:
+            tmp //= 2
+            power += 1
+
+        # Observe that the first 2^(n-1) consist of the next 2^(n-1) elements of 2^n
+        # i.e. [0,1,1,2] + [1,2,2,3] = [0,1,1,2,1,2,2,3]
+        res = [0]
+        if num > 0:
+            for i in range(power):
+                for j in range(len(res)):
+                    res.append(res[j] + 1)
+
+        return res[:num+1]
+
+    '''
+    [Leetcode: Hard] (146) LRU Cache, 3/19/2016
+
+    Design and implement a data structure for Least Recently Used (LRU) cache.
+    It should support the following operations: get and set.
+
+    get(key) - Get the value (will always be positive) of the key if the key exists in the cache, otherwise return -1.
+    set(key, value) - Set or insert the value if the key is not already present. When the cache reached its capacity,
+    it should invalidate the least recently used item before inserting a new item.
+    '''
+    class LRUCache(object):
+
+        def __init__(self, capacity):
+            """
+            :type capacity: int
+            """
+            self.capacity = capacity
+            self.cache = dict()
+            self.queue = []
+
+        def _isKey(self, key):
+            return True if key in self.cache.keys() else False
+
+        def get(self, key):
+            """
+            :rtype: int
+            """
+            if len(self.cache) == 0:
+                return -1
+
+            if self._isKey(key):
+                self.queue.remove(key)
+                self.queue.append(key)
+                return self.cache[key]
+            else:
+                return -1
+
+
+        def set(self, key, value):
+            """
+            :type key: int
+            :type value: int
+            :rtype: nothing
+            """
+            if not self._isKey(key):
+                if len(self.cache) == self.capacity:
+                    self.cache.pop(self.queue[0])
+                    self.queue = self.queue[1:]
+            else:
+                self.queue.remove(key)
+
+            self.cache[key] = value
+            self.queue.append(key)
