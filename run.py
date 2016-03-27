@@ -521,10 +521,17 @@ class CodeTest(object):
     def leet_223(self):
         print self.leet.computeArea(-2, -2, 2, 2, -3, -3, -2, -2)
 
+    def leet_089(self):
+        print self.leet.grayCode(5)
+
+    def leet_299(self):
+        print self.leet.getHint('1807', '7810')
+        print self.leet.getHint('1123', '0111')
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '223')
+    test_main('leet', '299')

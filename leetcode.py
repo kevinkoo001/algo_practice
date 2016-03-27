@@ -2296,3 +2296,123 @@ class Solution():
         else:
             intersect = min(G-A,C-E,C-A,G-E) * min(D-F,H-B,D-B,H-F)
             return area - intersect
+
+    '''
+    [Leetcode: Medium] (89) Gray Code, 3/26/2016
+
+    The gray code is a binary numeral system where two successive values differ in only one bit.
+    Given a non-negative integer n representing the total number of bits in the code, print the sequence of gray code. A gray code sequence must begin with 0.
+    For example, given n = 2, return [0,1,3,2]. Its gray code sequence is:
+    00 - 0
+    01 - 1
+    11 - 3
+    10 - 2
+    '''
+    def grayCode(self, n):
+        """
+        :type n: int
+        :rtype: List[int]
+        """
+
+        if n == 0:
+            return [0]
+
+        seq = ['0', '1']
+
+        # Key element is to observe that the next series should flip previous set and proceed.
+        # [0,1] -> 1,0 -> 11,10 -> [3,2]
+        # [0,1,3,2] -> 00,01,11,10 -> 10,11,01,00 -> 110,111,101,100 -> [6,7,5,4]
+        # [0,1,3,2,6,7,5,4] -> 1100,1101,1111,1110,1010,1011,1001,1000 -> [12,13,15,14,10,11,9,8]
+        for i in range(1, n):
+            seq += [('1'+x) for x in seq[::-1]]
+            seq = [x.zfill(i+1) for x in seq]
+
+        return [int('0b' + str(int(x)), 2) for x in seq]
+
+    '''
+    [Leetcode: Easy] (299) Bulls and Cows, 3/26/2016
+
+    You are playing the following Bulls and Cows game with your friend: You write down a number
+    and ask your friend to guess what the number is. Each time your friend makes a guess,
+    you provide a hint that indicates how many digits in said guess match your secret number exactly
+    in both digit and position (called "bulls") and how many digits match the secret number
+    but locate in the wrong position (called "cows"). Your friend will use successive guesses
+    and hints to eventually derive the secret number.
+
+    For example:
+    Secret number:  "1807"
+    Friend's guess: "7810"
+
+    Hint: 1 bull and 3 cows. (The bull is 8, the cows are 0, 1 and 7.)
+    Write a function to return a hint according to the secret number and friend's guess,
+    use A to indicate the bulls and B to indicate the cows. In the above example, your function should return "1A3B".
+
+    Please note that both secret number and friend's guess may contain duplicate digits, for example:
+
+    Secret number:  "1123"
+    Friend's guess: "0111"
+    In this case, the 1st 1 in friend's guess is a bull, the 2nd or 3rd 1 is a cow, and your function should return "1A1B".
+    You may assume that the secret number and your friend's guess only contain digits,
+    and their lengths are always equal.
+    '''
+
+    def getHint(self, secret, guess):
+        """
+        :type secret: str
+        :type guess: str
+        :rtype: str
+        """
+
+        if len(secret) == 0 or len(secret) != len(guess):
+            return ''
+
+        '''
+        # Naive approach O(N^2) - Time Limit
+        bulls, cows = 0, 0
+
+        secrets = [s for s in secret]
+        guesses = [g for g in guess]
+
+        for i in range(len(guess)):
+            if guess[i] == secrets[i]:
+                bulls += 1
+                secrets[i] = '*'
+                guesses[i] = '*'
+
+        for j in range(len(guess)):
+            if guesses[j] == '*':
+                pass
+            else:
+                if guesses[j] in secrets:
+                    cows += 1
+                    secrets[secrets.index(guesses[j])] = '*'
+                    guesses[j] = '*'
+
+        return str(bulls) + 'A' + str(cows) + 'B'
+        '''
+
+        s_bag = {}
+        g_bag = {}
+        bulls = 0
+
+        # O(N) solution
+        for i in range(len(guess)):
+
+            # Checks all positions and count bulls
+            if secret[i] == guess[i]:
+                bulls += 1
+
+            # Otherwise count other numbers that does not match in each bag
+            else:
+                if secret[i] not in s_bag:
+                    s_bag[secret[i]] = 1
+                else:
+                    s_bag[secret[i]] += 1
+                if guess[i] not in g_bag:
+                    g_bag[guess[i]] = 1
+                else:
+                    g_bag[guess[i]] += 1
+
+        # Count cows: the min of which both g_bag and s_bag contains
+        cows = sum([min(s_bag[x], g_bag[x]) for x in g_bag if x in s_bag])
+        return str(bulls) + 'A' + str(cows) + 'B'
