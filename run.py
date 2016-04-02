@@ -528,10 +528,29 @@ class CodeTest(object):
         print self.leet.getHint('1807', '7810')
         print self.leet.getHint('1123', '0111')
 
+    def leet_257(self):
+        root = basicds.TreeNode(4,
+            basicds.TreeNode(7,
+                 basicds.TreeNode(2,
+                      basicds.TreeNode(9, None, None),
+                      None),
+                 basicds.TreeNode(6, None, None)),
+            basicds.TreeNode(3,
+                 basicds.TreeNode(1,
+                      basicds.TreeNode(8, None, None),
+                      basicds.TreeNode(5, None, None)),
+                 None))
+
+        print self.leet.binaryTreePaths(root)
+
+    def leet_322(self):
+        coins = [1,2,5,8]
+        print self.leet.coinChange(coins, 11)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '299')
+    test_main('leet', '322')

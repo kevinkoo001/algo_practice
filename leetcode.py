@@ -2416,3 +2416,88 @@ class Solution():
         # Count cows: the min of which both g_bag and s_bag contains
         cows = sum([min(s_bag[x], g_bag[x]) for x in g_bag if x in s_bag])
         return str(bulls) + 'A' + str(cows) + 'B'
+
+    '''
+    [Leetcode: Easy] (257) Binary Tree Paths, 4/2/2016
+
+    Given a binary tree, return all root-to-leaf paths.
+    For example, given the following binary tree:
+
+       1
+     /   \
+    2     3
+     \
+      5
+    All root-to-leaf paths are:
+
+    ["1->2->5", "1->3"]
+    '''
+    def binaryTreePaths(self, root):
+
+        def dfsHelper(root, path, paths):
+            # Case 1: Node is a leaf
+            if root.left == None and root.right == None:
+                paths.append(path)
+
+            # Case 2: Node has a left child
+            if root.left:
+                dfsHelper(root.left, path + "->" + str(root.left.val), paths)
+
+            # Case 3: Node has a right child
+            if root.right:
+                dfsHelper(root.right, path + "->" + str(root.right.val), paths)
+
+        if root is None:
+            return []
+
+        paths = []
+        dfsHelper(root, str(root.val), paths)
+        return paths
+
+    '''
+    [Leetcode: Medium] (322) Coin Change, 4/2/2016
+
+    You are given coins of different denominations and a total amount of money amount.
+    Write a function to compute the fewest number of coins that you need to make up that amount.
+    If that amount of money cannot be made up by any combination of the coins, return -1.
+
+    Example 1:
+    coins = [1, 2, 5], amount = 11
+    return 3 (11 = 5 + 5 + 1)
+
+    Example 2:
+    coins = [2], amount = 3
+    return -1.
+
+    Note:
+    You may assume that you have an infinite number of each kind of coin.
+    '''
+    def coinChange(self, coins, amount):
+        """
+        :type coins: List[int]
+        :type amount: int
+        :rtype: int
+        """
+
+        if amount == 0:
+            return 0
+
+        if min(coins) > amount:
+            return -1
+
+        # Initialize DP table
+        dp = [amount+1] * amount
+
+        # Construct DP table
+        # dp[next] = min(dp[current coin - (all coins)]) + 1
+        for idx in range(amount):
+            coin = idx+1
+            if coin in coins:
+                dp[idx] = 1
+            else:
+                chk = [coin-x for x in coins if coin-x>=0]
+                if len(chk) != 0:
+                    dp[idx] = min([dp[x-1] for x in chk]) + 1
+
+        # return dp[amount-1] if the value is availalbe
+        return -1 if dp[amount-1] > amount else dp[amount-1]
