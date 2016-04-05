@@ -2499,5 +2499,64 @@ class Solution():
                 if len(chk) != 0:
                     dp[idx] = min([dp[x-1] for x in chk]) + 1
 
-        # return dp[amount-1] if the value is availalbe
+        # return dp[amount-1] if the value is available
         return -1 if dp[amount-1] > amount else dp[amount-1]
+
+    '''
+    [Leetcode: Easy] (290) Word Pattern, 4/4/2016
+    Given a pattern and a string str, find if str follows the same pattern.
+
+    Here follow means a full match, such that there is a bijection
+    between a letter in pattern and a non-empty word in str.
+
+    Examples:
+    pattern = "abba", str = "dog cat cat dog" should return true.
+    pattern = "abba", str = "dog cat cat fish" should return false.
+    pattern = "aaaa", str = "dog cat cat dog" should return false.
+    pattern = "abba", str = "dog dog dog dog" should return false.
+    Notes:
+    You may assume pattern contains only lowercase letters,
+    and str contains lowercase letters separated by a single space.
+    '''
+    def wordPattern(self, pattern, str):
+        """
+        :type pattern: str
+        :type str: str
+        :rtype: bool
+        """
+
+        p = list(pattern)
+        strp = str.split(' ')
+
+        print p
+        print strp
+
+        if len(p) != len(strp):
+            return False
+
+        # Define two check bags
+        chkbag1 = {}
+        chkbag2 = {}
+
+        ans = True
+
+        # Check if a pattern needs to map only a single word
+        # Note that a sinlge word also maps a single pattern
+
+        for idx in range(len(p)):
+
+            if p[idx] not in chkbag1:
+                chkbag1[p[idx]] = strp[idx]
+
+            if strp[idx] not in chkbag2:
+                chkbag2[strp[idx]] = p[idx]
+
+            if p[idx] in chkbag1:
+                if chkbag1[p[idx]] != strp[idx]:
+                    ans = False
+
+            if strp[idx] in chkbag2:
+                if chkbag2[strp[idx]] != p[idx]:
+                    ans = False
+
+        return ans

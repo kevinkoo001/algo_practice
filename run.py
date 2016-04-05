@@ -547,10 +547,17 @@ class CodeTest(object):
         coins = [1,2,5,8]
         print self.leet.coinChange(coins, 11)
 
+    def leet_290(self):
+        pattern = 'abba'
+        str1 = "dog cat cat dog"
+        str2 = "dog dog dog dog"
+        print self.leet.wordPattern(pattern, str1)
+        print self.leet.wordPattern(pattern, str2)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '322')
+    test_main('leet', '290')
