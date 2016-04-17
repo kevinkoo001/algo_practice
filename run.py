@@ -554,10 +554,29 @@ class CodeTest(object):
         print self.leet.wordPattern(pattern, str1)
         print self.leet.wordPattern(pattern, str2)
 
+    def leet_087(self):
+        s = "great"
+        print self.leet.isScramble("rgtae", s)
+        print self.leet.isScramble("rgeat", s)
+        print self.leet.isScramble("argte", s)
+
+    def leet_113(self):
+        root = basicds.TreeNode(5)
+        root.left = basicds.TreeNode(4)
+        root.right = basicds.TreeNode(8)
+        root.left.left = basicds.TreeNode(11)
+        root.right.left= basicds.TreeNode(13)
+        root.right.right= basicds.TreeNode(4)
+        root.left.left.left = basicds.TreeNode(7)
+        root.left.left.right = basicds.TreeNode(2)
+        root.right.right.left= basicds.TreeNode(5)
+        root.right.right.right= basicds.TreeNode(1)
+        print self.leet.pathSum(root, 22)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '290')
+    test_main('leet', '113')
