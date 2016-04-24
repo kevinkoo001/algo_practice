@@ -9,6 +9,13 @@ class TreeNode(object):
         self.left = left
         self.right = right
 
+class TreeLinkNode(object):
+     def __init__(self, x):
+         self.val = x
+         self.left = None
+         self.right = None
+         self.next = None
+
 class Interval(object):
      def __init__(self, s=0, e=0):
          self.start = s

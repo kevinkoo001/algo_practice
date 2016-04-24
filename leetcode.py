@@ -2680,3 +2680,166 @@ class Solution():
         pathSumHelper(root, root.val, [root.val], res)
 
         return res
+
+    '''
+    [Leetcode: Easy] (344) Reverse String, 4/23/2016
+    Write a function that takes a string as input and returns the string reversed.
+
+    Example:
+    Given s = "hello", return "olleh".
+    '''
+    def reverseString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+
+        str_list = list(s)
+
+        # Simplest solution
+        # return s[::-1]
+
+        # Change the positions in order until the middle point
+        for i in range(len(s)//2):
+            tmp = str_list[i]
+            str_list[i] = str_list[-i-1]
+            str_list[-i-1] = tmp
+
+        return "".join(str_list)
+
+    '''
+    [Leetcode: Medium] (108) Convert Sorted Array to Binary Search Tree, 4/23/2016
+    Given an array where elements are sorted in ascending order, convert it to a height balanced BST.
+    '''
+    def sortedArrayToBST(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: TreeNode
+        """
+        def buildTree(nums):
+
+            # Base Case
+            if not nums:
+                return None
+
+            # Every call, build left and right side of the tree
+            mid = len(nums)//2
+            root = basicds.TreeNode(nums[mid])
+            root.left = buildTree(nums[:mid])
+            root.right = buildTree(nums[mid+1:])
+
+            return root
+
+        return buildTree(nums)
+
+    '''
+    [Leetcode: Medium] (116) Populating Next Right Pointers in Each Node, 4/23/2016
+    Given a binary tree
+
+        struct TreeLinkNode {
+          TreeLinkNode *left;
+          TreeLinkNode *right;
+          TreeLinkNode *next;
+        }
+    Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL.
+
+    Initially, all next pointers are set to NULL.
+
+    Note:
+
+    You may only use constant extra space.
+    You may assume that it is a perfect binary tree (ie, all leaves are at the same level, and every parent has two children).
+    For example,
+    Given the following perfect binary tree,
+             1
+           /  \
+          2    3
+         / \  / \
+        4  5  6  7
+    After calling your function, the tree should look like:
+             1 -> NULL
+           /  \
+          2 -> 3 -> NULL
+         / \  / \
+        4->5->6->7 -> NULL
+    '''
+    def connect(self, root):
+        """
+        :type root: TreeLinkNode
+        :rtype: nothing
+        """
+
+        if root == None or root.right == None:
+            return None
+
+        # Observation
+        # (a) the root-left-next always connects to root-right
+        # (b) if root has next, root-right-next connects to root-next-left
+        root.left.next = root.right
+        if root.next:
+           root.right.next = root.next.left
+
+        # Iteratively connect all nodes at the same layer
+        self.connect(root.left)
+        self.connect(root.right)
+
+    '''
+    [Leetcode: Hard] (117) Populating Next Right Pointers in Each Node II, 4/23/2016
+    Follow up for problem 116 (Generalization)
+    What if the given tree could be any binary tree? Would your previous solution still work?
+
+    Note: you may only use constant extra space.
+
+    For example,
+    Given the following binary tree,
+             1
+           /  \
+          2    3
+         / \    \
+        4   5    7
+    After calling your function, the tree should look like:
+             1 -> NULL
+           /  \
+          2 -> 3 -> NULL
+         / \    \
+        4-> 5 -> 7 -> NULL
+    '''
+    def connect2(self, root):
+        """
+        :type root: TreeLinkNode
+        :rtype: nothing
+        """
+        # Check if the next node is available in the same layer
+        def get_next(node):
+            while True:
+                if node.left:
+                    return node.left
+                elif node.right:
+                    return node.right
+                else:
+                    if node.next:
+                        node = node.next
+                    else:
+                        return None
+
+        # Base case
+        if root == None:
+            return None
+
+        # When there is only a left node
+        if root.left and not root.right:
+            if root.next:
+                root.left.next = get_next(root.next)
+
+        # When there is a right node
+        if root.right:
+            if root.next:
+                root.right.next = get_next(root.next)
+
+        # Both children are available
+        if root.left and root.right:
+            root.left.next = root.right
+
+        # IDEA: Construct the link from the right!!
+        self.connect2(root.right)
+        self.connect2(root.left)

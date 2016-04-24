@@ -573,10 +573,37 @@ class CodeTest(object):
         root.right.right.right= basicds.TreeNode(1)
         print self.leet.pathSum(root, 22)
 
+    def leet_344(self):
+        print self.leet.reverseString('hello')
+
+    def leet_108(self):
+        T = self.leet.sortedArrayToBST([3,5,6,8,9,11,13,15])
+        basicds.levelorder(T)
+
+    def leet_116(self):
+        root = basicds.TreeLinkNode(1)
+        root.left, root.right = basicds.TreeLinkNode(2), basicds.TreeLinkNode(3)
+        root.left.left, root.left.right = basicds.TreeLinkNode(4), basicds.TreeLinkNode(5)
+        root.right.left, root.right.right = basicds.TreeLinkNode(6), basicds.TreeLinkNode(7)
+        self.leet.connect(root)
+        print root.val
+        print root.left.val, root.left.next.val
+        print root.left.left.val, root.left.left.next.val, root.left.right.next.val
+
+    def leet_117(self):
+        root = basicds.TreeLinkNode(1)
+        root.left, root.right = basicds.TreeLinkNode(2), basicds.TreeLinkNode(3)
+        root.left.left, root.left.right = basicds.TreeLinkNode(4), basicds.TreeLinkNode(5)
+        root.right.right = basicds.TreeLinkNode(7)
+        self.leet.connect2(root)
+        print root.val
+        print root.left.val, root.left.next.val
+        print root.left.left.val, root.left.left.next.val, root.left.right.next.val
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '113')
+    test_main('leet', '117')
