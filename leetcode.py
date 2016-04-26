@@ -2843,3 +2843,66 @@ class Solution():
         # IDEA: Construct the link from the right!!
         self.connect2(root.right)
         self.connect2(root.left)
+
+    '''
+    [Leetcode: Easy] (342) Power of Four, 4/25/2016
+    Given an integer (signed 32 bits), write a function to check whether it is a power of 4.
+
+    Example:
+    Given num = 16, return true. Given num = 5, return false.
+
+    Follow up: Could you solve it without loops/recursion?
+    '''
+    def isPowerOfFour(self, num):
+        """
+        :type num: int
+        :rtype: bool
+        """
+
+        # Power can't be 0 or negative
+        if num <= 0:
+            return False
+
+        '''
+        Observation
+        1) Only the first digit should be 1, followed by zeroes
+            4^0 = 1 = 2^0 (1)
+            4^1 = 4  = 2^2 (100)
+            4^2 = 16  = 2^4 (10000)
+            4^3 = 64  = 2^6 (1000000)
+            4^4 = 256 = 2^8 (100000000)
+        2) The number of zeroes is always even
+        '''
+        b = bin(num).split('0b')[1]
+        nz = b.count('0')
+
+        return b[0] == '1' and nz == len(b)-1 and nz%2 == 0
+
+
+    def reverseVowels(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        vowels = {}
+
+        for i in range(len(s)):
+            if s[i] in 'aeiouAEIOU':
+                vowels[i] = s[i]
+
+        if len(vowels) == 0:
+            return s
+
+        strs = list(s)
+        v_idxes = list(sorted(vowels))
+
+        for i in range(len(v_idxes)//2):
+            tmp = vowels[v_idxes[i]]
+            vowels[v_idxes[i]] = vowels[v_idxes[-i-1]]
+            vowels[v_idxes[-i-1]] = tmp
+
+        for j in range(len(strs)):
+            if j in v_idxes:
+                strs[j] = vowels[j]
+
+        return ''.join(strs)
