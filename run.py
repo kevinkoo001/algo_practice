@@ -608,10 +608,15 @@ class CodeTest(object):
     def leet_345(self):
         print self.leet.reverseVowels("A man a plan a cameo Zena Bird Mocha Prowel a rave a!")
 
+    def leet_171(self):
+        print self.leet.titleToNumber('AA')
+        print self.leet.titleToNumber('ABX')
+        print self.leet.titleToNumber('ZTU')
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '345')
+    test_main('leet', '171')

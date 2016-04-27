@@ -2878,14 +2878,28 @@ class Solution():
 
         return b[0] == '1' and nz == len(b)-1 and nz%2 == 0
 
+    '''
+    [Leetcode: Easy] (345) Power of Four, 4/27/2016
+    Write a function that takes a string as input and reverse only the vowels of a string.
 
+    Example 1:
+    Given s = "hello", return "holle".
+
+    Example 2:
+    Given s = "leetcode", return "leotcede".
+    '''
     def reverseVowels(self, s):
         """
         :type s: str
         :rtype: str
         """
+
+        '''
+        # Correct implementation but time limit excceeded..
+
         vowels = {}
 
+        # Build the table for vowel positions
         for i in range(len(s)):
             if s[i] in 'aeiouAEIOU':
                 vowels[i] = s[i]
@@ -2896,13 +2910,96 @@ class Solution():
         strs = list(s)
         v_idxes = list(sorted(vowels))
 
+        # Exchange the vowel positions
         for i in range(len(v_idxes)//2):
             tmp = vowels[v_idxes[i]]
             vowels[v_idxes[i]] = vowels[v_idxes[-i-1]]
             vowels[v_idxes[-i-1]] = tmp
 
+        # Combine the final strings with the exchanged vowels
         for j in range(len(strs)):
             if j in v_idxes:
                 strs[j] = vowels[j]
 
         return ''.join(strs)
+        '''
+
+        '''
+        # Did it in a similar fashion; does not work again!
+
+        idxes, vowels = [], []
+        strs = list(s)
+        ans = ''
+
+        for idx, v in enumerate(s):
+            if v in 'aeiouAEIOU':
+                idxes.append(idx)
+                vowels.append(v)
+
+        vowels.reverse()
+
+        for i in range(len(strs)):
+            if i in idxes:
+                ans += vowels[idxes.index(i)]
+            else:
+                ans += s[i]
+
+        return ans
+        '''
+
+        # Set the two pointers from the front and the back
+        fp, bp = 0, len(s)-1
+
+        vows = 'aeiouAEIOU'
+        strs = list(s)
+
+        # Whenever vowels are found, exchange the two
+        while fp < bp:
+            if s[fp] in vows and s[bp] in vows:
+                strs[fp], strs[bp] = strs[bp], strs[fp]
+                fp += 1
+                bp -= 1
+
+            # Otherwise move the pointers
+            elif s[fp] not in vows:
+                strs[fp] = s[fp]
+                fp += 1
+
+            elif s[bp] not in vows:
+                bp -= 1
+
+        return ''.join(strs)
+
+    '''
+    [Leetcode: Easy] (171) Excel Sheet Column Number, 4/27/2016
+    Related to question Excel Sheet Column Title
+    Given a column title as appear in an Excel sheet, return its corresponding column number.
+
+    For example:
+        A -> 1
+        B -> 2
+        C -> 3
+        ...
+        Z -> 26
+        AA -> 27
+        AB -> 28
+    '''
+    def titleToNumber(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+
+        '''
+        u_cases = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        case_val = {}
+
+        for i in range(len(u_cases)):
+            case_val[u_cases[i]] = i+1
+
+        # 26 number system
+        return sum([(26**x) * case_val[s[-x-1]] for x in range(len(s))])
+        '''
+
+        # Faster one
+        return sum([(26**digit) * (ord(x)-64) for (digit, x) in enumerate(s[::-1])])
