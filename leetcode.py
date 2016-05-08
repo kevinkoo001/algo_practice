@@ -3003,3 +3003,120 @@ class Solution():
 
         # Faster one
         return sum([(26**digit) * (ord(x)-64) for (digit, x) in enumerate(s[::-1])])
+
+    '''
+    [Leetcode: Meidum] (78) Subsets, 5/7/2016
+    Given a set of distinct integers, nums, return all possible subsets.
+
+    Note:
+    Elements in a subset must be in non-descending order.
+    The solution set must not contain duplicate subsets.
+
+    For example,
+    If nums = [1,2,3], a solution is:
+    [[3],[1],[2],[1,2,3],[1,3],[2,3],[1,2],[]]
+    '''
+    def subsets(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+
+        '''
+        # Using itertools
+        import itertools
+        sol = []
+
+        for i in range(len(nums)+1):
+            comb = [x for x in itertools.combinations(nums, i)]
+
+            for j in range(len(comb)):
+                sol.append(sorted(list(comb[j])))
+
+        return sol
+        '''
+
+        subsets = [[]]
+        nums = sorted(nums)
+
+        # Iteratively add subsets only if the subset is not in the current subsets
+        for i in range(len(nums)):
+            subsets += [subset+[nums[i]] for subset in subsets if subset+[nums[i]] not in subsets]
+
+        return subsets
+
+    '''
+    [Leetcode: Meidum] (90) Subsets II, 5/7/2016
+    Given a collection of integers that might contain duplicates, nums, return all possible subsets.
+
+    Note:
+    Elements in a subset must be in non-descending order.
+    The solution set must not contain duplicate subsets.
+
+    For example,
+    If nums = [1,2,2], a solution is:
+    [[2],[1],[1,2,2],[2,2],[1,2],[]]
+    '''
+    def subsetsWithDup(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+
+        nums = sorted(nums)
+        subsets = [[]]
+
+        # Similar to the problem 78
+        for i in range(len(nums)):
+            subsets += [subset+[nums[i]] for subset in subsets if subset+[nums[i]] not in subsets]
+
+        return subsets
+
+
+    '''
+    [Leetcode: Hard] (149) Max Points on a Line, 5/7/2016
+    Given n points on a 2D plane, find the maximum number of points that lie on the same straight line.
+    '''
+    def maxPoints(self, points):
+        def getSlope(pt1, pt2):
+            # Parallel line to x axis
+            if pt1.x - pt2.x == 0:
+                slope = 'Inf'
+
+            # General cases
+            else:
+                slope = (pt1.y - pt2.y) / float(pt1.x - pt2.x)
+
+            return slope
+
+        def isDupPoint(pt1, pt2):
+            return pt1.x == pt2.x and pt1.y == pt2.y
+
+        num_pts = len(points)
+        if num_pts < 3:
+            return num_pts
+
+        max_pts = 0
+
+        # If the slopes of the two points are same,
+        # they lie on the same straight line.
+        for i in range(num_pts):
+            slopes = {}
+            dup_pt = 0
+
+            for j in range(i+1, num_pts):
+                # If two points are identical, just count one
+                if isDupPoint(points[i], points[j]):
+                    dup_pt += 1
+                    continue
+                # Get the slope and maintain it to the hash table
+                else:
+                    s = getSlope(points[i], points[j])
+                    if s not in slopes:
+                        slopes[s] = 2
+                    else:
+                        slopes[s] += 1
+
+            max_pts = max(max_pts, max(slopes.values())+dup_pt) if slopes else max(max_pts, dup_pt+1)
+
+        return max_pts

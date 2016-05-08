@@ -613,10 +613,29 @@ class CodeTest(object):
         print self.leet.titleToNumber('ABX')
         print self.leet.titleToNumber('ZTU')
 
+    def leet_078(self):
+        print self.leet.subsets([1,2,3])
+
+    def leet_090(self):
+        print self.leet.subsetsWithDup([1,2,2])
+
+    def leet_149(self):
+        # [[-1,-1], [0,0], [1,1]]
+        p1 = basicds.Point(-1,-1)
+        p2 = basicds.Point(0,0)
+        p3 = basicds.Point(1,1)
+        print self.leet.maxPoints([p1,p2,p3])
+
+        # [[84,250],[0,0],[1,0],[0,-70],[0,-70],[1,-1],[21,10],[42,90],[-42,-230]]
+        p1, p2, p3 = basicds.Point(84,250), basicds.Point(0,0), basicds.Point(1,0)
+        p4, p5, p6 = basicds.Point(0,-70), basicds.Point(0,-70), basicds.Point(1,-1)
+        p7, p8, p9 = basicds.Point(21,10), basicds.Point(42,90), basicds.Point(-42,-230)
+        print self.leet.maxPoints([p1,p2,p3,p4,p5,p6,p7,p8,p9])
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '171')
+    test_main('leet', '149')

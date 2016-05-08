@@ -38,3 +38,9 @@ def printList(root):
         print root.val,
         root = root.next
     print ''
+
+# Definition for a point (for leetcode 149)
+class Point(object):
+    def __init__(self, a=0, b=0):
+        self.x = a
+        self.y = b
