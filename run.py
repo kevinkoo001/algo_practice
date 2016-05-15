@@ -632,10 +632,17 @@ class CodeTest(object):
         p7, p8, p9 = basicds.Point(21,10), basicds.Point(42,90), basicds.Point(-42,-230)
         print self.leet.maxPoints([p1,p2,p3,p4,p5,p6,p7,p8,p9])
 
+    def leet_239(self):
+        print self.leet.maxSlidingWindow([1,3,-1,-3,5,3,6,7], 3)
+
+    def leet_347(self):
+        print self.leet.topKFrequent([1,3,3,4,6,6,6,6], 2)
+        print self.leet.topKFrequent([1,1,1,2,2,3], 2)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '149')
+    test_main('leet', '347')

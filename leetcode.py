@@ -1,3 +1,4 @@
+# coding=utf-8
 import basicds
 
 class Solution():
@@ -3072,7 +3073,6 @@ class Solution():
 
         return subsets
 
-
     '''
     [Leetcode: Hard] (149) Max Points on a Line, 5/7/2016
     Given n points on a 2D plane, find the maximum number of points that lie on the same straight line.
@@ -3120,3 +3120,87 @@ class Solution():
             max_pts = max(max_pts, max(slopes.values())+dup_pt) if slopes else max(max_pts, dup_pt+1)
 
         return max_pts
+
+    '''
+    [Leetcode: Hard] (239) Sliding Window Maximum, 5/14/2016
+    Given an array nums, there is a sliding window of size k which is moving from the very left of the array
+    to the very right. You can only see the k numbers in the window.
+    Each time the sliding window moves right by one position.
+
+    For example,
+    Given nums = [1,3,-1,-3,5,3,6,7], and k = 3.
+
+    Window position                Max
+    ---------------               -----
+    [1  3  -1] -3  5  3  6  7       3
+     1 [3  -1  -3] 5  3  6  7       3
+     1  3 [-1  -3  5] 3  6  7       5
+     1  3  -1 [-3  5  3] 6  7       5
+     1  3  -1  -3 [5  3  6] 7       6
+     1  3  -1  -3  5 [3  6  7]      7
+    Therefore, return the max sliding window as [3,3,5,5,6,7].
+
+    Note:
+    You may assume k is always valid, ie: 1 ≤ k ≤ input array's size for non-empty array.
+
+    Follow up:
+    Could you solve it in linear time?
+    '''
+    def maxSlidingWindow(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+
+        ans = []
+
+        if len(nums) == 0 or k == 0:
+            return []
+
+        # Get the max element from the range nums[i:i+k]
+        for i in range(len(nums)-k+1):
+            ans.append(max(nums[i:i+k]))
+
+        return ans
+
+    '''
+    [Leetcode: Medium] (347) STop K Frequent Elements, 5/14/2016
+    Given a non-empty array of integers, return the k most frequent elements.
+
+    For example,
+    Given [1,1,1,2,2,3] and k = 2, return [1,2].
+
+    Note:
+    You may assume k is always valid, 1 ≤ k ≤ number of unique elements.
+    Your algorithm's time complexity must be better than O(n log n), where n is the array's size.
+    '''
+    def topKFrequent(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: List[int]
+        """
+
+        uniq_nums = list(set(nums))
+        num_cnts = []
+
+        ans = []
+
+        # Count the unique numbers
+        for n in uniq_nums:
+            num_cnts.append(nums.count(n))
+
+        # Collect top k frequent elements
+        while len(ans) < k:
+            # Get the indexes and the top element
+            m = max(num_cnts)
+            m_idx = num_cnts.index(m)
+            freq = uniq_nums[m_idx]
+            ans.append(freq)
+
+            # Remove the items found
+            num_cnts.remove(num_cnts[m_idx])
+            uniq_nums.remove(uniq_nums[m_idx])
+
+        return ans
