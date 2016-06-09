@@ -639,10 +639,30 @@ class CodeTest(object):
         print self.leet.topKFrequent([1,3,3,4,6,6,6,6], 2)
         print self.leet.topKFrequent([1,1,1,2,2,3], 2)
 
+    def leet_349(self):
+        print self.leet.intersection([1,2,2,1], [2,2])
+
+    def leet_165(self):
+        print self.leet.compareVersion('1.3.2.0', '1.3.2')
+        print self.leet.compareVersion('1.4.2', '1.2')
+        print self.leet.compareVersion('1.0', '0.99')
+        print self.leet.compareVersion('3', '2.9.9.10')
+        print self.leet.compareVersion('2.8.0', '2.42')
+
+    def leet_155(self):
+        ms = basicds.MinStack()
+        ms.push(-2)
+        ms.push(0)
+        ms.push(-3)
+        print ms.getMin()
+        ms.pop()
+        print ms.top()
+        print ms.getMin()
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '347')
+    test_main('leet', '155')

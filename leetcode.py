@@ -3204,3 +3204,82 @@ class Solution():
             uniq_nums.remove(uniq_nums[m_idx])
 
         return ans
+
+    '''
+    [Leetcode: Easy] (349) Intersection of Two Arrays, 6/8/2016
+    Given two arrays, write a function to compute their intersection.
+
+    Example:
+    Given nums1 = [1, 2, 2, 1], nums2 = [2, 2], return [2].
+
+    Note:
+    Each element in the result must be unique.
+    The result can be in any order.
+    '''
+    def intersection(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+
+        if len(nums1) == 0 or len(nums2) == 0:
+            return []
+
+        # Simple solution with set operator
+        return list(set(nums1) & set(nums2))
+
+    '''
+    [Leetcode: Easy] (165) Intersection of Two Arrays, 6/8/2016
+    Compare two version numbers version1 and version2.
+    If version1 > version2 return 1, if version1 < version2 return -1, otherwise return 0.
+
+    You may assume that the version strings are non-empty and contain only digits and the . character.
+    The . character does not represent a decimal point and is used to separate number sequences.
+    For instance, 2.5 is not "two and a half" or "half way to version three", it is the fifth second-level revision
+    of the second first-level revision.
+
+    Here is an example of version numbers ordering:
+    0.1 < 1.1 < 1.2 < 13.37
+    '''
+    def compareVersion(self, version1, version2):
+        """
+        :type version1: str
+        :type version2: str
+        :rtype: int
+        """
+        def adj_vlen(v, diff):
+            for i in range(diff):
+                v.append(0)
+            return v
+
+        v1 = version1.split('.')
+        v2 = version2.split('.')
+
+        # Example cases to consider
+        # 1.3.2 > 1.2
+        # 1.0 > 0.99
+        # 2.42 < 2.8.0
+        # 3 > 2.9.9.10
+        # 1.3.2.0 == 1.3.2
+
+        chk_len = max(len(v1), len(v2))
+        len_diff = abs(len(v1) - len(v2))
+
+        # Adjust the length of the shorter version
+        if len(v1) > len(v2):
+            v2 = adj_vlen(v2, len_diff)
+
+        if len(v1) < len(v2):
+            v1 = adj_vlen(v1, len_diff)
+
+        # Check each digit to compare a version
+        for i in range(chk_len):
+            if int(v1[i]) > int(v2[i]):
+                return 1
+            elif int(v1[i]) < int(v2[i]):
+                return -1
+            else:
+                pass
+
+        return 0

@@ -44,3 +44,57 @@ class Point(object):
     def __init__(self, a=0, b=0):
         self.x = a
         self.y = b
+
+'''
+[Leetcode: Easy] (155) Min Stack, 6/8/2016
+Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+
+push(x) -- Push element x onto stack.
+pop() -- Removes the element on top of the stack.
+top() -- Get the top element.
+getMin() -- Retrieve the minimum element in the stack.
+'''
+class MinStack(object):
+
+    def __init__(self):
+        """
+        initialize your data structure here.
+        """
+        self.stack = []
+        self.minval = 2**32 # INT_MAX
+
+    def push(self, x):
+        """
+        :type x: int
+        :rtype: void
+        """
+        self.stack.append(x)
+
+        if self.minval > x:
+            self.minval = x
+
+    def pop(self):
+        """
+        :rtype: void
+        """
+        val = self.stack.pop()
+
+        # Initialization when no element left
+        if len(self.stack) == 0:
+            self.minval = 2**32
+
+        # Adjust min value when min is popped out
+        elif val == self.minval:
+            self.minval = min(self.stack)
+
+    def top(self):
+        """
+        :rtype: int
+        """
+        return self.stack[-1]
+
+    def getMin(self):
+        """
+        :rtype: int
+        """
+        return self.minval
