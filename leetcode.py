@@ -3283,3 +3283,83 @@ class Solution():
                 pass
 
         return 0
+
+    '''
+    [Leetcode: Easy] (14) Longest Common Prefix, 6/11/2016
+    Write a function to find the longest common prefix string amongst an array of strings.
+    '''
+    def longestCommonPrefix(self, strs):
+        """
+        :type strs: List[str]
+        :rtype: str
+        """
+
+        if len(strs) == 0:
+            return ""
+
+        min_str_len = 2**32 - 1 # MAX_INT
+
+        for s in strs:
+            str_len = len(s)
+            if str_len < min_str_len:
+                min_str_len = str_len
+
+        prefix_len = 0
+
+        # Check ith digit at jth string
+        for i in range(min_str_len):
+            digit_strs = set()
+
+            # Length of set would be 1 if all digits of strings are identical
+            for j in range(len(strs)):
+                digit_strs.add(strs[j][i])
+
+            if len(digit_strs) == 1:
+                prefix_len += 1
+            else:
+                break
+
+        return strs[0][0:prefix_len]
+
+    '''
+    [Leetcode: Easy] (350) Intersection of Two Arrays II, 6/11/2016
+    Given two arrays, write a function to compute their intersection.
+
+    Example:
+    Given nums1 = [1, 2, 2, 1], nums2 = [2, 2], return [2, 2].
+
+    Note:
+    Each element in the result should appear as many times as it shows in both arrays.
+    The result can be in any order.
+    '''
+    def intersect(self, nums1, nums2):
+        """
+        :type nums1: List[int]
+        :type nums2: List[int]
+        :rtype: List[int]
+        """
+
+        # Find (element:occurence) pairs
+        def get_stats(nums):
+            stat = dict()
+            for n in nums:
+                if n in stat:
+                    stat[n] += 1
+                else:
+                    stat[n] = 1
+            return stat
+
+        if len(nums1) == 0 or len(nums2) == 0:
+            return []
+
+        ans = []
+        n1_s = get_stats(nums1)
+        n2_s = get_stats(nums2)
+
+        intersect = list(set(n1_s) & set(n2_s))
+
+        # Find how many times the intersection of arrays show up
+        for i in intersect:
+            ans += [i] * min(n1_s[i], n2_s[i])
+
+        return ans

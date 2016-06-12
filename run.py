@@ -659,10 +659,27 @@ class CodeTest(object):
         print ms.top()
         print ms.getMin()
 
+    def leet_014(self):
+        print self.leet.longestCommonPrefix(["aca","cba"])
+        print self.leet.longestCommonPrefix(["ab","abd","abcde"])
+
+    def leet_232(self):
+        Q = basicds.Queue()
+        Q.push(1)
+        Q.push(2)
+        Q.push(3)
+        print Q.peek()
+        Q.pop()
+        print Q.peek()
+
+    def leet_350(self):
+        print self.leet.intersect([1,2,2,1], [2,2])
+        print self.leet.intersect([1,2,2,1,3,3,4,2], [1,2,3,4,4,2,1,1,1])
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '155')
+    test_main('leet', '350')
