@@ -3363,3 +3363,139 @@ class Solution():
             ans += [i] * min(n1_s[i], n2_s[i])
 
         return ans
+
+    '''
+    [Leetcode: Easy] (102) Binary Tree Level Order Traversal, 6/15/2016
+    Given a binary tree, return the level order traversal of its nodes' values.
+    (ie, from left to right, level by level).
+
+    For example:
+    Given binary tree [3,9,20,null,null,15,7],
+        3
+       / \
+      9  20
+        /  \
+       15   7
+    return its level order traversal as:
+    [
+      [3],
+      [9,20],
+      [15,7]
+    ]
+    '''
+    def levelOrder(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
+
+        def levelOrderHelper(root, depth, traversal):
+            if root == None:
+                return None
+
+            # As a depth goes, read values to the same list
+            if depth not in traversal:
+                traversal[depth] = [root.val]
+            else:
+                traversal[depth] += [root.val]
+
+            levelOrderHelper(root.left, depth+1, traversal)
+            levelOrderHelper(root.right, depth+1, traversal)
+
+        if root == None:
+            return []
+
+        traversal = {}
+        levelOrderHelper(root, 0, traversal)
+
+        return traversal.values()
+
+    '''
+    [Leetcode: Easy] (107) Binary Tree Level Order Traversal II, 6/15/2016
+    Given a binary tree, return the bottom-up level order traversal of its nodes' values.
+    (ie, from left to right, level by level from leaf to root).
+
+    For example:
+    Given binary tree [3,9,20,null,null,15,7],
+        3
+       / \
+      9  20
+        /  \
+       15   7
+    return its bottom-up level order traversal as:
+    [
+      [15,7],
+      [9,20],
+      [3]
+    ]
+    '''
+    def levelOrderBottom(self, root):
+        """
+        :type root: TreeNode
+        :rtype: List[List[int]]
+        """
+
+        def levelOrderBottomHelper(root, level, traversal):
+            if root == None:
+                return None
+
+            if level not in traversal:
+                traversal[level] = [root.val]
+            else:
+                traversal[level] += [root.val]
+
+            levelOrderBottomHelper(root.left, level+1, traversal)
+            levelOrderBottomHelper(root.right, level+1, traversal)
+
+        if root == None:
+            return []
+
+        traversal = {}
+        levelOrderBottomHelper(root, 0, traversal)
+
+        # Return the result in a reverse way (Same approach with Leet102)
+        return traversal.values()[::-1]
+
+    '''
+    [Leetcode: Easy] (357) Count Numbers with Unique Digits, 6/15/2016
+    Given a non-negative integer n, count all numbers with unique digits, x, where 0 ≤ x < 10n.
+
+    Example:
+    Given n = 2, return 91. (The answer should be the total numbers in the range of 0 ≤ x < 100,
+    excluding [11,22,33,44,55,66,77,88,99])
+    '''
+    def countNumbersWithUniqueDigits(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+
+        # uniq digits where n
+        # n = 1:
+        #   9 * 1 + 1 = 10
+        # n = 2:
+        #   first possible digits = 9
+        #   next possible digits = 9
+        #   9 * 9 + all_digits(n=1) = 81+10 = 91
+        # n = 3:
+        #   9 * 9 * 8 + all_digits(n=2) = 648 + 91 = 739
+        # n = 4:
+        #   9 * 9 * 8 * 7 + 739 = 5276, ...
+
+        def nthUniqueDigits(n):
+            s = 9
+            for i in range(9, 10-n, -1):
+                s *= i
+            return s
+
+        # If more than 9 digits, no number would have unique digits
+        if n > 9:
+            n = 9
+
+        # Count 0 as a special case
+        ans = 1
+        while n > 0:
+            ans += nthUniqueDigits(n)
+            n -= 1
+
+        return ans

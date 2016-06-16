@@ -676,10 +676,34 @@ class CodeTest(object):
         print self.leet.intersect([1,2,2,1], [2,2])
         print self.leet.intersect([1,2,2,1,3,3,4,2], [1,2,3,4,4,2,1,1,1])
 
+    def leet_102(self):
+        # [3,9,20,null,null,15,7]
+        root = basicds.TreeNode(3)
+        root.left = basicds.TreeNode(9)
+        root.right = basicds.TreeNode(20)
+        root.right.left = basicds.TreeNode(15)
+        root.right.right = basicds.TreeNode(7)
+        print self.leet.levelOrder(root)
+
+    def leet_107(self):
+        # [3,9,20,null,null,15,7]
+        root = basicds.TreeNode(3)
+        root.left = basicds.TreeNode(9)
+        root.right = basicds.TreeNode(20)
+        root.right.left = basicds.TreeNode(15)
+        root.right.right = basicds.TreeNode(7)
+        print self.leet.levelOrderBottom(root)
+
+    def leet_357(self):
+        print self.leet.countNumbersWithUniqueDigits(2)
+        print self.leet.countNumbersWithUniqueDigits(3)
+        print self.leet.countNumbersWithUniqueDigits(4)
+        print self.leet.countNumbersWithUniqueDigits(9)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '350')
+    test_main('leet', '357')
