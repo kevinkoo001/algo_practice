@@ -700,10 +700,17 @@ class CodeTest(object):
         print self.leet.countNumbersWithUniqueDigits(4)
         print self.leet.countNumbersWithUniqueDigits(9)
 
+    def leet_389(self):
+        print self.leet.findTheDifference('abcde', 'badcer')
+
+    def leet_390(self):
+        print self.leet.lastRemaining(21)
+        print self.leet.lastRemaining(2000)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '357')
+    test_main('leet', '390')
