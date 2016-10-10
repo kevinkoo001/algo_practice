@@ -707,10 +707,23 @@ class CodeTest(object):
         print self.leet.lastRemaining(21)
         print self.leet.lastRemaining(2000)
 
+    def leet_392(self):
+        print self.leet.isSubsequence("abc", "ahbgdc")
+        print self.leet.isSubsequence("axc", "ahbgdc")
+
+    def leet_393(self):
+        print self.leet.validUtf8([197, 130, 1])
+        print self.leet.validUtf8([235, 140, 4])
+
+    def leet_394(self):
+        print self.leet.decodeString("3[a]2[bc]")
+        print self.leet.decodeString("3[a2[c]]")
+        print self.leet.decodeString("2[abc]3[cd]ef")
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '390')
+    test_main('leet', '392')

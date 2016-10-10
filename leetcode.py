@@ -3616,3 +3616,168 @@ class Solution():
 
         # Ends up with s == e now
         return s
+
+    '''
+    [Leetcode: Medium] (392) Is Subsequence My SubmissionsBack To Contest, 10/08/2016
+    Given a string s and a string t, check if s is subsequence of t.
+    You may assume that there is only lower case English letters in both s and t.
+    t is potentially a very long (length ~= 500,000) string, and s is a short string (<=100).
+    A subsequence of a string is a new string which is formed from the original string
+    by deleting some (can be none) of the characters without disturbing the relative positions
+    of the remaining characters. (ie, "ace" is a subsequence of "abcde" while "aec" is not).
+
+    Example 1: Return true.
+    s = "abc", t = "ahbgdc"
+
+    Example 2: Return false
+    s = "axc", t = "ahbgdc"
+    '''
+    def isSubsequence(self, s, t):
+        """
+        :type s: str
+        :type t: str
+        :rtype: bool
+        """
+
+        s_ptr, t_ptr = 0, 0
+
+        while s_ptr < len(s):
+            try:
+                if t[t_ptr] == s[s_ptr]:
+                    s_ptr += 1
+                    t_ptr += 1
+                else:
+                    t_ptr += 1
+            except IndexError:
+                return False
+
+        return s_ptr == len(s)
+
+    '''
+    [Leetcode: Medium] (393) UTF-8 Validation, 10/08/2016
+    A character in UTF8 can be from 1 to 4 bytes long, subjected to the following rules:
+
+    For 1-byte character, the first bit is a 0, followed by its unicode code.
+    For n-bytes character, the first n-bits are all one's, the n+1 bit is 0, followed by n-1 bytes
+    with most significant 2 bits being 10.
+
+    This is how the UTF-8 encoding would work:
+
+       Char. number range  |        UTF-8 octet sequence
+          (hexadecimal)    |              (binary)
+       --------------------+---------------------------------------------
+       0000 0000-0000 007F | 0xxxxxxx
+       0000 0080-0000 07FF | 110xxxxx 10xxxxxx
+       0000 0800-0000 FFFF | 1110xxxx 10xxxxxx 10xxxxxx
+       0001 0000-0010 FFFF | 11110xxx 10xxxxxx 10xxxxxx 10xxxxxx
+
+    Given an array of integers representing the data, return whether it is a valid utf-8 encoding.
+
+    Note:
+    The input is an array of integers. Only the least significant 8 bits of each integer is used to store the data.
+    This means each integer represents only 1 byte of data.
+
+    Example 1: Return true.
+    data = [197, 130, 1], which represents the octet sequence: 11000101 10000010 00000001.
+    It is a valid utf-8 encoding for a 2-bytes character followed by a 1-byte character.
+
+    Example 2: Return false.
+    data = [235, 140, 4], which represented the octet sequence: 11101011 10001100 00000100.
+    The first 3 bits are all one's and the 4th bit is 0 means it is a 3-bytes character.
+    The next byte is a continuation byte which starts with 10 and that's correct.
+    But the second continuation byte does not start with 10, so it is invalid.
+    '''
+    def validUtf8(self, data):
+        """
+        :type data: List[int]
+        :rtype: bool
+        """
+        def get_utf_type(x):
+            # utf_mask and sequence to check
+            if (x & 0b11110000) == 0b11110000:
+                return 3
+            elif (x & 0b11100000) == 0b11100000:
+                return 2
+            elif (x & 0b11000000) == 0b11000000:
+                return 1
+            elif (x & 0b10000000) == 0b10000000:
+                return -1
+            else:
+                return 0
+
+        UTF_SEQ_MASK = 0b10000000
+        data_ptr = 0
+        isValid = True
+
+        while data_ptr < len(data):
+            utf_type = get_utf_type(data[data_ptr])
+            cur_data = data[data_ptr:data_ptr + utf_type + 1]
+
+            if utf_type < 0:
+                return False
+
+            if utf_type == 0:
+                data_ptr += (utf_type + 1)
+
+            else:
+                for i in range(1, utf_type + 1):
+                    try:
+                        if (cur_data[i] & UTF_SEQ_MASK) != UTF_SEQ_MASK:
+                            return False
+                    except IndexError:
+                        return False
+
+                data_ptr += (utf_type + 1)
+
+        return isValid
+
+    '''
+    [Leetcode: Medium] (394) Decode String, 10/08/2016
+    Given an encoded string, return it's decoded string.
+    The encoding rule is: k[encoded_string], where the encoded_string inside the square brackets
+    is being repeated exactly k times. Note that k is guaranteed to be a positive integer.
+    You may assume that the input string is always valid; No extra white spaces,
+    square brackets are well-formed, etc.
+    Furthermore, you may assume that the original data does not contain any digits and
+    that digits are only for those repeat numbers, k. For example, there won't be input like 3a or 2[4].
+
+    Examples:
+    s = "3[a]2[bc]", return "aaabcbc".
+    s = "3[a2[c]]", return "accaccacc".
+    s = "2[abc]3[cd]ef", return "abcabccdcdcdef".
+    '''
+    def decodeString(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+        import string
+
+        cur_num = ''
+        num_stack = []
+        str_stack = []
+
+        for c in s:
+            if c in string.digits:
+                cur_num += c
+
+            else:
+                str_stack.append(c)
+
+                if c == '[':
+                    # Construct the number and initialize it
+                    num_stack.append(int(cur_num))
+                    cur_num = ''
+
+                elif c == ']':
+                    str_stack.pop()             # pop off ']'
+                    cur_str = str_stack.pop()   # pop off the string
+                    decoded_str = ''
+
+                    while cur_str != '[':
+                        decoded_str = cur_str + decoded_str
+                        cur_str = str_stack.pop()
+
+                    str_stack.append(decoded_str * num_stack.pop())
+
+        return ''.join(str_stack)
