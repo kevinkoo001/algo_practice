@@ -720,10 +720,26 @@ class CodeTest(object):
         print self.leet.decodeString("3[a2[c]]")
         print self.leet.decodeString("2[abc]3[cd]ef")
 
+    def leet_396(self):
+        print self.leet.maxRotateFunction([4,3,2,6])
+        print self.leet.maxRotateFunction([1,2,3,4,5,6])
+
+    def leet_397(self):
+        print self.leet.integerReplacement(10)
+        print self.leet.integerReplacement(49)
+        print self.leet.integerReplacement(10000)
+        print self.leet.integerReplacement(1000000)
+
+    def leet_398(self):
+        rpi = basicds.RandomPickIndex([1,2,3,3,3])
+        print rpi.pick(1), rpi.pick(2), rpi.pick(3)
+        rpi2 = basicds.RandomPickIndex([9,-1,3,6,4,2,-1,3,4,2,4,1])
+        print rpi2.pick(3), rpi2.pick(9), rpi2.pick(-1)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '392')
+    test_main('leet', '398')

@@ -190,3 +190,55 @@ class Queue(object):
         :rtype: bool
         """
         return len(self.stack1) == 0 and len(self.stack2) == 0
+
+'''
+[Leetcode: Medium] (398) Random Pick Index, 10/15/2016
+Given an array of integers with possible duplicates, randomly output the index of a given target number.
+You can assume that the given target number must exist in the array.
+
+Note:
+The array size can be very large. Solution that uses too much extra space will not pass the judge.
+
+Example:
+int[] nums = new int[] {1,2,3,3,3};
+Solution solution = new Solution(nums);
+
+// pick(3) should return either index 2, 3, or 4 randomly.
+Each index should have equal probability of returning.
+solution.pick(3);
+
+// pick(1) should return 0. Since in the array only nums[0] is equal to 1.
+solution.pick(1);
+'''
+class RandomPickIndex(object):
+    def __init__(self, nums):
+        """
+        :type nums: List[int]
+        :type numsSize: int
+        """
+
+        self.info_nums = {}
+
+        # Construct the hash table for all pairs
+        # element: the list of indexes that the element is shown
+        for i, n in enumerate(nums):
+            if n not in self.info_nums:
+                self.info_nums[n] = [i]
+            else:
+                self.info_nums[n].append(i)
+
+    def pick(self, target):
+        """
+        :type target: int
+        :rtype: int
+        """
+        indexes = self.info_nums[target]
+
+        if len(indexes) == 1:
+            return indexes[0]
+
+        import random
+        random.shuffle(indexes)
+
+        # Pick the one of the indexes for the corresponding target
+        return indexes[0]

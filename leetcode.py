@@ -3781,3 +3781,111 @@ class Solution():
                     str_stack.append(decoded_str * num_stack.pop())
 
         return ''.join(str_stack)
+
+    '''
+    [Leetcode: Easy] (396) Rotate Function, 10/15/2016
+    Given an array of integers A and let n to be its length.
+    Assume Bk to be an array obtained by rotating the array A k positions clock-wise,
+    we define a "rotation function" F on A as follow:
+
+    F(k) = 0 * Bk[0] + 1 * Bk[1] + ... + (n-1) * Bk[n-1].
+
+    Calculate the maximum value of F(0), F(1), ..., F(n-1).
+
+    Note:
+    n is guaranteed to be less than 105.
+
+    Example:
+
+    A = [4, 3, 2, 6]
+
+    F(0) = (0 * 4) + (1 * 3) + (2 * 2) + (3 * 6) = 0 + 3 + 4 + 18 = 25
+    F(1) = (0 * 6) + (1 * 4) + (2 * 3) + (3 * 2) = 0 + 4 + 6 + 6 = 16
+    F(2) = (0 * 2) + (1 * 6) + (2 * 4) + (3 * 3) = 0 + 6 + 8 + 9 = 23
+    F(3) = (0 * 3) + (1 * 2) + (2 * 6) + (3 * 4) = 0 + 2 + 12 + 12 = 26
+
+    So the maximum value of F(0), F(1), F(2), F(3) is F(3) = 26.
+    '''
+    def maxRotateFunction(self, A):
+        """
+        :type A: List[int]
+        :rtype: int
+        """
+
+        sum_A, size_A = sum(A), len(A) - 1
+        maxSum = sum([i*A[i] for i in range(len(A))])
+        curSum = maxSum
+
+        # Without re-positioning 'A', it is possible to calculate the sum
+        # when the elements are clock-wise rotated as follows;
+        #  - increased by total sum of all elements but A[i] and
+        #  - decreased by the last element that is rotated to the front
+        for i in range(len(A)-1, 0, -1):
+            curSum = curSum - (size_A * A[i]) + (sum_A - A[i])
+            if curSum > maxSum:
+                maxSum = curSum
+
+        return maxSum
+
+    '''
+    [Leetcode: Medium] (397) Integer Replacement, 10/15/2016
+    Given a positive integer n and you can do operations as follow:
+
+    If n is even, replace n with n/2.
+    If n is odd, you can replace n with either n + 1 or n - 1.
+    What is the minimum number of replacements needed for n to become 1?
+
+    Example 1:
+        Input:  8
+        Output: 3
+        Explanation: 8 -> 4 -> 2 -> 1
+
+    Example 2:
+        Input:  7
+        Output: 4
+        Explanation:  7 -> 8 -> 4 -> 2 -> 1  or  7 -> 6 -> 3 -> 2 -> 1
+    '''
+    def integerReplacement(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        def isPowerOfTwo(x):
+            return x & (x-1) == 0
+
+        def reachOddCount(x):
+            cnt = 0
+            # x should be always an even number
+            while x > 0:
+                x = x / 2
+                if x % 2 == 0:
+                    cnt += 1
+                else:
+                    cnt += 1
+                    return cnt
+
+        step = 0
+
+        # Count all steps for each case
+        while n > 1:
+            # Case 1: even number -> just divide the n by 2
+            if n % 2 == 0:
+                n = n / 2
+                step += 1
+            # Case 2: odd number -> consider the following 3 cases
+            else:
+                # if either n-1 or n+1 is two to the power of x
+                # that is the shortest path to reach 1
+                if isPowerOfTwo(n - 1):
+                    n = n - 1
+                    step += 1
+                elif isPowerOfTwo(n + 1):
+                    n = n + 1
+                    step += 1
+                else:
+                    # if none of the cases above as an odd number,
+                    # choose the shorter path to reach another odd number
+                    n = n+1 if reachOddCount(n - 1) < reachOddCount(n + 1) else n - 1
+                    step += 1
+
+        return step
