@@ -736,10 +736,24 @@ class CodeTest(object):
         rpi2 = basicds.RandomPickIndex([9,-1,3,6,4,2,-1,3,4,2,4,1])
         print rpi2.pick(3), rpi2.pick(9), rpi2.pick(-1)
 
+    def leet_119(self):
+        print self.leet.getRow(4)
+        print self.leet.getRow(10)
+
+    def leet_383(self):
+        print self.leet.canConstruct("a", "b")
+        print self.leet.canConstruct("aa", "baa")
+
+    def leet_35(self):
+        print self.leet.searchInsert([1,3,5,6], 2)
+        print self.leet.searchInsert([1,3,5,6], 1)
+        print self.leet.searchInsert([1,3,5,6], 4)
+        print self.leet.searchInsert([1,3,5,6], 0)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '398')
+    test_main('leet', '35')

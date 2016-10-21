@@ -3889,3 +3889,110 @@ class Solution():
                     step += 1
 
         return step
+
+    '''
+    [Leetcode: Easy] (119) Pascal's Triangle II, 10/21/2016
+    Given an index k, return the kth row of the Pascal's triangle.
+
+    For example, given k = 3,
+    Return [1,3,3,1].
+
+    Note:
+    Could you optimize your algorithm to use only O(k) extra space?
+    '''
+
+    def getRow(self, rowIndex):
+        """
+        :type rowIndex: int
+        :rtype: List[int]
+        """
+
+        if rowIndex == 1:
+            return [1,1]
+
+        ans = [1]
+
+        n = rowIndex
+        r = n / 2
+
+        # The idea is how to represent pascal's triangle!
+        # n_C_r = n_C_(r-1) * (n-r+1)/r
+        for i in range(1, r + 1):
+            ans.append((ans[-1] * (n - i + 1)) / i)
+            i += 1
+
+        if rowIndex % 2 == 0:
+            ans = ans + ans[:len(ans)-1][::-1]
+        else:
+            ans = ans + ans[::-1]
+
+        return ans
+
+    '''
+    [Leetcode: Easy] (383) Ransom Note, 10/21/2016
+    Given  an  arbitrary  ransom  note  string  and  another  string  containing  letters from  all  the  magazines, 
+    write  a  function  that  will  return  true  if  the  ransom   note  can  be  constructed  from  the  magazines ;  
+    otherwise,  it  will  return  false.   
+
+    Each  letter  in  the  magazine  string  can  only  be  used  once  in  your  ransom  note.
+
+    Note:
+    You may assume that both strings contain only lowercase letters.
+
+    canConstruct("a", "b") -> false
+    canConstruct("aa", "ab") -> false
+    canConstruct("aa", "aab") -> true
+    '''
+    def canConstruct(self, ransomNote, magazine):
+        """
+        :type ransomNote: str
+        :type magazine: str
+        :rtype: bool
+        """
+
+        r = list(ransomNote)
+        m = list(magazine)
+
+        while len(r) > 0:
+            try:
+                m.remove(r.pop())
+            except ValueError:
+                return False
+
+        return len(r) == 0
+
+    '''
+    [Leetcode: Easy] (35) Search Insert Position, 10/21/2016
+    Given a sorted array and a target value, return the index if the target is found.
+    If not, return the index where it would be if it were inserted in order.
+
+    You may assume no duplicates in the array.
+
+    Here are few examples.
+    [1,3,5,6], 5 → 2
+    [1,3,5,6], 2 → 1
+    [1,3,5,6], 7 → 4
+    [1,3,5,6], 0 → 0
+    '''
+    def searchInsert(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        """
+
+        insert_index = 0
+
+        nums_stats = {}
+
+        for n in nums:
+            if n not in nums_stats:
+                nums_stats[n] = 1
+            else:
+                nums_stats[n] += 1
+
+        for n in nums_stats.keys():
+            if n < target:
+                insert_index += nums_stats[n]
+
+        return insert_index
