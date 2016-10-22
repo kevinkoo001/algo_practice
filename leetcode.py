@@ -3996,3 +3996,81 @@ class Solution():
                 insert_index += nums_stats[n]
 
         return insert_index
+
+    '''
+    [Leetcode: Medium] (62) Unique Paths, 10/21/2016
+    A robot is located at the top-left corner of a m x n grid (marked 'Start' in the diagram below).
+    The robot can only move either down or right at any point in time.
+    The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+    --------------------------------------
+    |Start|     |     |     |     |      |
+    --------------------------------------
+    |     |     |     |     |     |      |
+    --------------------------------------
+    |     |     |     |     |     |      |
+    --------------------------------------
+    |     |     |     |     |     |Finish|
+    --------------------------------------
+    How many possible unique paths are there?
+    '''
+    def uniquePaths(self, m, n):
+        """
+        :type m: int
+        :type n: int
+        :rtype: int
+        """
+
+        # Initialize all paths as 0s
+        path_info = [[0 for _ in range(n)] for _ in range(m)]
+
+        # The left-most and upper-most paths should be 1
+        for i in range(len(path_info)):
+            for j in range(len(path_info[0])):
+                if i == 0 or j == 0:
+                    path_info[i][j] = 1
+
+        # Unique paths can be calculated by the sum of
+        # the number of unique paths from the left and the above.
+        for i in range(1, len(path_info)):
+            for j in range(1, len(path_info[0])):
+                path_info[i][j] = path_info[i-1][j] + path_info[i][j-1]
+
+        return path_info[m-1][n-1]
+
+    '''
+    [Leetcode: Medium] (53) Maximum Subarray, 10/21/2016
+    Find the contiguous subarray within an array (containing at least one number) which has the largest sum.
+
+    For example, given the array [-2,1,-3,4,-1,2,1,-5,4],
+    the contiguous subarray [4,-1,2,1] has the largest sum = 6.
+    '''
+    def maxSubArray(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+
+        if len(nums) == 1:
+            return nums[0]
+
+        dp_sums = [0] * len(nums)
+        dp_sums[0] = nums[0]
+        max_sum = nums[0]
+
+        # Dynamic Programming:
+        # Pick the sum of previous sum as next element of the DP table only if it increases max_sum (>0)
+        for i in range(1, len(nums)):
+            dp_sums[i] = nums[i] + dp_sums[i-1] if dp_sums[i-1] > 0 else nums[i]
+            max_sum = max(max_sum, dp_sums[i])
+
+        '''
+        # O(N^2) solution; seems not working with time-excceeded limit
+        # Construct DP table with partial sums!
+        for i in range(len(nums)):
+            dp_sums[i] = nums[i]
+            for j in range(i+1, len(nums)):
+                dp_sums[j] = dp_sums[j-1] + nums[j]
+                max_sum = max(max_sum, dp_sums[j])
+        '''
+
+        return max_sum
