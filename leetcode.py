@@ -4074,3 +4074,97 @@ class Solution():
         '''
 
         return max_sum
+
+    '''
+    [Leetcode: Easy] (400) Nth Digit, 10/22/2016
+    Find the nth digit of the infinite integer sequence 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ...
+
+    Note: n is positive and will fit within the range of a 32-bit signed integer (n < 231).
+
+    Example 1:
+    Input:  3
+    Output: 3
+
+    Example 2:
+    Input: 11
+    Output: 0
+
+    Explanation:
+    The 11th digit of the sequence 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, ... is a 0, which is part of the number 10.
+    '''
+    def findNthDigit(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+
+        if n < 10:
+            return n
+
+        digit = 1
+        d_len = 0 # Total length of digits
+
+        # Find the number of digits of n
+        while True:
+            d_len = digit * (9 * (10**(digit-1)))
+            if n - d_len > 0:
+                n -= d_len
+            else:
+                break
+            digit += 1
+
+        # Get the real number and its position
+        dig_pos = n % digit
+        num_pos = n // digit
+        real_num = (10**(digit-1)) + num_pos
+
+        #print digit, n, dig_pos, num_pos, real_num
+
+        return int(str(real_num-1)[digit-1]) if dig_pos == 0 else int(str(real_num)[dig_pos-1])
+
+    '''
+    [Leetcode: Easy] (401) Maximum Subarray, 10/22/2016
+    A binary watch has 4 LEDs on the top which represent the hours (0-11), and the 6 LEDs on the bottom represent the minutes (0-59).
+    Each LED represents a zero or one, with the least significant bit on the right.
+
+    For example, the above binary watch reads "3:25".
+    Given a non-negative integer n which represents the number of LEDs that are currently on, return all possible times the watch could represent.
+
+    Example:
+    Input: n = 1
+    Return: ["1:00", "2:00", "4:00", "8:00", "0:01", "0:02", "0:04", "0:08", "0:16", "0:32"]
+    '''
+    def readBinaryWatch(self, num):
+        """
+        :type num: int
+        :rtype: List[str]
+        """
+        def get_sets(t):
+            possible_sets = {}
+            for x in range(t):
+                num_1s = bin(x)[2:].count('1')
+                if not num_1s in possible_sets:
+                    possible_sets[num_1s] = [str(x)]
+                else:
+                    possible_sets[num_1s] += [str(x)]
+
+            return possible_sets
+
+        if num == 0:
+            return ["0:00"]
+
+        if num > 8:
+            return []
+
+        hours, minutes = get_sets(12), get_sets(60)
+        ans = []
+
+        for h_bit in range(num + 1):
+            if h_bit in hours.keys():
+                m_bit = num - h_bit
+                if m_bit in minutes.keys():
+                    for h in hours[h_bit]:
+                        for m in minutes[m_bit]:
+                            ans.append(h + ":" + m.zfill(2))
+
+        return ans

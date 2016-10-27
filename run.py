@@ -759,10 +759,19 @@ class CodeTest(object):
         print self.leet.maxSubArray([-1,-2])
         print self.leet.maxSubArray([-2,1,-3,4,-1,2,1,-5,4])
 
+    def leet_400(self):
+        print self.leet.findNthDigit(3)
+        print self.leet.findNthDigit(11)
+        print self.leet.findNthDigit(249)
+        print self.leet.findNthDigit(1000)
+
+    def leet_401(self):
+        print self.leet.readBinaryWatch(4)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '53')
+    test_main('leet', '401')
