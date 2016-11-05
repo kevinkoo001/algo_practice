@@ -4168,3 +4168,93 @@ class Solution():
                             ans.append(h + ":" + m.zfill(2))
 
         return ans
+
+    '''
+    [Leetcode: Easy] (409) Longest Palindrome, 11/5/2016
+    Given a string which consists of lowercase or uppercase letters, find the length of the longest palindromes that can be built with those letters.
+    This is case sensitive, for example "Aa" is not considered a palindrome here.
+
+    Note: Assume the length of given string will not exceed 1,010.
+
+    Example:
+    Input: "abccccdd"
+    Output: 7
+
+    Explanation: One longest palindrome that can be built is "dccaccd", whose length is 7.
+    '''
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        s_bag = {}
+        odd_max_len = 0
+
+        # Count # of all elements
+        for c in s:
+            if c not in s_bag:
+                s_bag[c] = 1
+            else:
+                s_bag[c] += 1
+
+        # Even elements could be always part of palindrome
+        evens_len = sum(filter(lambda x: x%2==0, s_bag.values()))
+        odds = filter(lambda x: x%2==1, s_bag.values())
+        odds_len = 0
+
+        # The maximum odd number of elements could be in
+        if len(odds) > 0:
+            odd_max_len = max(odds)
+            odds.remove(odd_max_len)
+
+        if len(odds) > 0:
+            odds_len = sum(odds) - len(odds)
+
+        return evens_len + odd_max_len + odds_len
+
+    '''
+    [Leetcode: Easy] (410) Split Array Largest Sum, 11/5/2016
+    Given an array which consists of non-negative integers and an integer m, you can split the array into m non-empty continuous subarrays. Write an algorithm to minimize the largest sum among these m subarrays.
+
+    Note: Given m satisfies the following constraint: 1 ≤ m ≤ length(nums) ≤ 14,000.
+
+    Examples:
+    Input: nums = [7,2,5,10,8], m = 2
+    Output: 18
+
+    Explanation:
+    There are four ways to split nums into two subarrays.
+    The best way is to split it into [7,2,5] and [10,8],
+    where the largest sum among the two subarrays is only 18.
+    '''
+    def splitArray(self, nums, m):
+        """
+        :type nums: List[int]
+        :type m: int
+        :rtype: int
+        """
+        def isValidSubarr(mid):
+            cur_sum = 0
+            subarr_cnt = 0
+            for n in nums:
+                cur_sum += n
+                if cur_sum > mid:
+                    subarr_cnt += 1
+                    if subarr_cnt >= m:
+                        return False
+                    cur_sum = n
+            return True
+
+        # Initialize the range of minmax
+        low, high = max(nums), sum(nums)
+
+        # Find the value that matches the estimated minmax
+        # with binary search by adjusting mid
+        while low < high:
+            mid = low + (high - low)//2
+            if isValidSubarr(mid):
+                high = mid
+            else:
+                low = mid + 1
+
+        return high

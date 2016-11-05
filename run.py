@@ -768,10 +768,19 @@ class CodeTest(object):
     def leet_401(self):
         print self.leet.readBinaryWatch(4)
 
+    def leet_409(self):
+        print self.leet.longestPalindrome("abccccdd")
+        print self.leet.longestPalindrome("xyyzzcaaaccceeedd")
+
+    def leet_410(self):
+        print self.leet.splitArray([7,2,5,10,8], 2)
+        print self.leet.splitArray([7,2,5,10,8], 3)
+        print self.leet.splitArray([7,2,5,10,8], 4)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '401')
+    test_main('leet', '410')
