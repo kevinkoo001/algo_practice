@@ -4124,11 +4124,13 @@ class Solution():
 
     '''
     [Leetcode: Easy] (401) Maximum Subarray, 10/22/2016
-    A binary watch has 4 LEDs on the top which represent the hours (0-11), and the 6 LEDs on the bottom represent the minutes (0-59).
+    A binary watch has 4 LEDs on the top which represent the hours (0-11), and the 6 LEDs
+    on the bottom represent the minutes (0-59).
     Each LED represents a zero or one, with the least significant bit on the right.
 
     For example, the above binary watch reads "3:25".
-    Given a non-negative integer n which represents the number of LEDs that are currently on, return all possible times the watch could represent.
+    Given a non-negative integer n which represents the number of LEDs that are currently on,
+    return all possible times the watch could represent.
 
     Example:
     Input: n = 1
@@ -4171,7 +4173,8 @@ class Solution():
 
     '''
     [Leetcode: Easy] (409) Longest Palindrome, 11/5/2016
-    Given a string which consists of lowercase or uppercase letters, find the length of the longest palindromes that can be built with those letters.
+    Given a string which consists of lowercase or uppercase letters, find the length of
+    the longest palindromes that can be built with those letters.
     This is case sensitive, for example "Aa" is not considered a palindrome here.
 
     Note: Assume the length of given string will not exceed 1,010.
@@ -4214,7 +4217,9 @@ class Solution():
 
     '''
     [Leetcode: Easy] (410) Split Array Largest Sum, 11/5/2016
-    Given an array which consists of non-negative integers and an integer m, you can split the array into m non-empty continuous subarrays. Write an algorithm to minimize the largest sum among these m subarrays.
+    Given an array which consists of non-negative integers and an integer m,
+    you can split the array into m non-empty continuous subarrays.
+    Write an algorithm to minimize the largest sum among these m subarrays.
 
     Note: Given m satisfies the following constraint: 1 ≤ m ≤ length(nums) ≤ 14,000.
 
@@ -4258,3 +4263,100 @@ class Solution():
                 low = mid + 1
 
         return high
+
+    '''
+    [Leetcode: Easy] (423) Reconstruct Original Digits from English, 11/19/2016
+    Given a non-empty string containing an out-of-order English representation of digits 0-9,
+    output the digits in ascending order.
+
+    Note:
+    Input contains only lowercase English letters.
+    Input is guaranteed to be valid and can be transformed to its original digits.
+    That means invalid inputs such as "abc" or "zerone" are not permitted.
+    Input length is less than 50,000.
+
+    Example 1: Input: "owoztneoer",  Output: "012"
+    Example 2: Input: "fviefuro",    Output: "45"
+    '''
+    def originalDigits(self, s):
+        """
+        :type s: str
+        :rtype: str
+        """
+
+        ans = ''
+
+        # Check unique pattern to leave out
+        # 'z' is the only letter in all digits, then remove all letters ('zero')
+        # 'Likewise, 'w', 'u', 'x', and 'g' are the unique letters for '2', '4', '6' and '8' respectively
+        # Remove 't', 'f', 's', and 'i' in order, which remains the unique letter
+
+        patterns = ['zero', 'wto', 'ufor', 'xsi', 'geiht', 'three', 'five', 'seven', 'inne', 'one']
+        nums     = ['0', '2', '4', '6', '8', '3', '5', '7', '9', '1']
+
+        str_stat = {}
+
+        for c in s:
+            if not c in str_stat:
+                str_stat[c] = 1
+            else:
+                str_stat[c] += 1
+
+        for idx, pattern in enumerate(patterns):
+            chr_chk = pattern[0]
+            if chr_chk in str_stat:
+                chr_cnt = str_stat[chr_chk]
+                ans += nums[idx] * chr_cnt
+                if chr_cnt > 0:
+                    for p in pattern:
+                        str_stat[p] -= chr_cnt
+
+        return ''.join(sorted(ans))
+
+    '''
+    [Leetcode: Easy] (424) Longest Repeating Character Replacement, 11/19/2016
+    Given a string that consists of only uppercase English letters,
+    you can replace any letter in the string with another letter at most k times.
+    Find the length of a longest substring containing all repeating letters you can get after performing the above operations.
+
+    Note:
+    Both the string's length and k will not exceed 104.
+
+    Example 1:
+    Input: s = "ABAB", k = 2
+    Output: 4
+
+    Explanation: Replace the two 'A's with two 'B's or vice versa.
+
+    Example 2:
+    Input: s = "AABABBA", k = 1
+    Output: 4
+
+    Explanation:
+    Replace the one 'A' in the middle with 'B' and form "AABBBBA".
+    The substring "BBBB" has the longest repeating letters, which is 4.
+    '''
+    def characterReplacement(self, s, k):
+        """
+        :type s: str
+        :type k: int
+        :rtype: int
+        """
+
+        start, end = 0, 0
+
+        # Sliding window [start:end]
+        counts = {}
+        for end in range(1, len(s)+1):
+            if not s[end-1] in counts:
+                counts[s[end-1]] = 1
+            else:
+                counts[s[end-1]] += 1
+
+            most_freq_n = max(counts.values())
+
+            if end - start - most_freq_n > k:
+                counts[s[start]] -= 1
+                start += 1
+
+        return end - start

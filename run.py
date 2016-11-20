@@ -777,10 +777,19 @@ class CodeTest(object):
         print self.leet.splitArray([7,2,5,10,8], 3)
         print self.leet.splitArray([7,2,5,10,8], 4)
 
+    def leet_423(self):
+        print self.leet.originalDigits("owoztneoer")
+        print self.leet.originalDigits("fviefuro")
+
+    def leet_424(self):
+        test_set = ['ABAB', 'ABEFDDDDB', 'BAAABBBBCC']
+        for test in test_set:
+            print self.leet.characterReplacement(test, 1)
+
 def test_main(kind, prob):
     ct = CodeTest(kind)
     ct.proc_test(prob)
 
 if __name__ == '__main__':
     # Change the problem set and the number
-    test_main('leet', '410')
+    test_main('leet', '424')
